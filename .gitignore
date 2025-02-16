@@ -1,0 +1,72 @@
+# User template example provided
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+
+### Standard Django ###
+# Django local development files
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Static files collected by collectstatic
+/staticfiles/*
+!/staticfiles/.gitkeep
+
+# Coverage reports
+.coverage
+htmlcov/
+
+# PyCharm
+.idea/
+.idea_modules/
+
+# VSCode
+.vscode/
+
+# Python
+*.py[cod]
+pip-wheel-metadata/
+build/
+dist/
+*.egg-info/
+*.manifest
+*.spec
+
+# Testing
+.pytest_cache/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Local development overrides
+.env.local
+.env.*.local
