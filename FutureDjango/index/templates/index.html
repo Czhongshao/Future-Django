@@ -1,0 +1,120 @@
+<!-- index/templates/index.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据可视化</title>
+    <!-- css -->
+    <link rel="stylesheet" href="{% static '/css/index.css' %}" />
+    <!-- js -->
+    <script src="{% static 'plugins/bootstrap-5.1.0-dist/js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
+    <script src="{% static 'js/dist/echarts.min.js' %}"></script>
+    <script src="{% static 'js/flexible.js' %}"></script>
+    <script src="{% static 'plugins/assets/v5/maps/china.js' %}"></script>
+
+
+</head>
+<body>
+    <video class="background" autoplay loop muted src="{% static 'img/back01.mp4' %}"></video>
+
+    <!-- 标题盒子设计 -->
+    <header>
+        <h1>人口与社会趋势可视化大屏</h1>
+        <div class="showTime"></div>
+
+        <script>
+            //Time Style： 当前时间：2024年04月22日 - 22时10分15秒
+            var t = null;
+            t = setTimeout(time, 1000);
+            time();
+            function time() {
+                clearTimeout(t);
+                var dt = new Date();
+                var y = dt.getFullYear();
+                var mt = (dt.getMonth() + 1).toString().padStart(2, '0');
+                var day = dt.getDate().toString().padStart(2, '0');
+                var h = (dt.getHours() < 10 ? '0' : '') + dt.getHours();
+                var m = (dt.getMinutes() < 10 ? '0' : '') + dt.getMinutes();
+                var s = (dt.getSeconds() < 10 ? '0' : '') + dt.getSeconds();
+    
+                document.querySelector(".showTime").innerHTML 
+                = '当前时间：' 
+                  + y + '年'
+                  + mt + '月'
+                  + day + '日'
+                  + ' - '
+                  + h + '时'
+                  + m + '分'
+                  + s + '秒';
+    
+                t = setTimeout(time, 1000);
+            }
+        </script>
+
+        <script>
+            $(function () {
+                // 加载柱状图
+                const barDom = document.getElementById('barChart');
+                const barChart = echarts.init(barDom);
+                const bardataURL = "{% url 'index:test1' %}";
+                
+                $.ajax({
+                    url: bardataURL,
+                    dataType: 'json',
+                    success: function (response) {
+                        // response 已被 jQuery 自动解析为对象，无需再次 JSON.parse
+                        barChart.setOption(response);
+                    },
+                    error: function (xhr) {
+                        console.error('数据加载失败:', xhr.statusText);
+                    }
+                });
+            });
+        </script>
+
+
+    </header>
+
+
+    <section class="mainbox">
+        <!-- 左侧图表 -->
+        <div class="column"> 
+            <div class="panel scatter">
+                <h2>散点图</h2>
+                <div id="scatterChart" class="chart"></div>
+            </div>
+            <div class="panel bar">
+                <h2>柱状图</h2>
+                <div id="barChart" class="chart"></div>
+            </div>
+        </div>
+
+        <!-- 中间图表 -->
+        <div class="column">
+            <div class="panel1 map">
+                <h2>中国地图</h2>
+                <div id="mapChart" class="chart"></div>
+                <p class="shentu">注：基于自然资源部标准地图服务网站GS（2024）0650号的标准地图制作，底图边界无修改。</p>
+            </div>
+        </div>
+
+        <!-- 右侧图表 -->
+        <div class="column">
+            <div class="panel line">
+                <h2>折线图</h2>
+                <div id="lineChart" class="chart"></div>
+            </div>
+            <div class="panel pie">
+                <h2>饼图</h2>
+                <div id="pieChart" class="chart"></div>
+            </div>
+        </div>
+    </section>
+
+
+
+    </body>
+</html>
