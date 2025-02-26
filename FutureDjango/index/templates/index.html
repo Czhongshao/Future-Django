@@ -13,7 +13,8 @@
     <script src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
     <script src="{% static 'js/dist/echarts.min.js' %}"></script>
     <script src="{% static 'js/flexible.js' %}"></script>
-    <script src="{% static 'plugins/assets/v5/maps/china.js' %}"></script>
+    <!-- <script src="{% static 'plugins/assets/v5/maps/china.js' %}"></script> -->
+
 
 
 </head>
@@ -56,11 +57,11 @@
 
         <script>
             $(function () {
+
                 // 加载柱状图
                 const barDom = document.getElementById('barChart');
                 const barChart = echarts.init(barDom);
-                const bardataURL = "{% url 'index:test1' %}";
-                
+                const bardataURL = "{% url 'index:barall' %}";
                 $.ajax({
                     url: bardataURL,
                     dataType: 'json',
@@ -72,6 +73,28 @@
                         console.error('数据加载失败:', xhr.statusText);
                     }
                 });
+
+                // 加载地图
+                const mapDom = document.getElementById('mapChart');
+                const mapChart = echarts.init(mapDom);
+                const mapdataURL = "{% url 'index:mapall' %}";
+                $.ajax({
+                    url: mapdataURL,
+                    dataType: 'json',
+                    success: function (response) {
+                        // response 已被 jQuery 自动解析为对象，无需再次 JSON.parse
+                        mapChart.setOption(response);
+                    },
+                    error: function (xhr) {
+                        console.error('数据加载失败:', xhr.statusText);
+                    }
+                });
+
+                // 加载折线图
+                const lineDom = document.getElementById('lineChart');
+                const linChart = echarts.init(lineDom);
+                const linedataURL = "{}";
+
             });
         </script>
 
