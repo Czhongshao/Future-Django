@@ -13,7 +13,7 @@
     <script src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
     <script src="{% static 'js/dist/echarts.min.js' %}"></script>
     <script src="{% static 'js/flexible.js' %}"></script>
-    <!-- <script src="{% static 'plugins/assets/v5/maps/china.js' %}"></script> -->
+    <script src="{% static 'plugins/assets/v5/maps/china.js' %}"></script>
 
 
 
@@ -65,12 +65,12 @@
                 $.ajax({
                     url: bardataURL,
                     dataType: 'json',
-                    success: function (response) {
+                    success: function(response){
                         // response 已被 jQuery 自动解析为对象，无需再次 JSON.parse
                         barChart.setOption(response);
                     },
-                    error: function (xhr) {
-                        console.error('数据加载失败:', xhr.statusText);
+                    error: function(xhr){
+                        console.error('数据加载失败：', xhr.statusText);
                     }
                 });
 
@@ -81,20 +81,59 @@
                 $.ajax({
                     url: mapdataURL,
                     dataType: 'json',
-                    success: function (response) {
+                    success: function(response){
                         // response 已被 jQuery 自动解析为对象，无需再次 JSON.parse
                         mapChart.setOption(response);
                     },
-                    error: function (xhr) {
-                        console.error('数据加载失败:', xhr.statusText);
+                    error: function(xhr){
+                        console.error('数据加载失败：', xhr.statusText);
                     }
                 });
 
                 // 加载折线图
                 const lineDom = document.getElementById('lineChart');
-                const linChart = echarts.init(lineDom);
-                const linedataURL = "{}";
+                const lineChart = echarts.init(lineDom);
+                const linedataURL = "{% url 'index:lineall' %}";
+                $.ajax({
+                    url:linedataURL,
+                    dataType: 'json',
+                    success: function(response){
+                        lineChart.setOption(response);
+                    },
+                    error: function(xhr){
+                        console.error('数据加载失败：', xhr.statusText);
+                    }
+                });
 
+                // 加载饼图
+                const pieDom = document.getElementById('pieChart');
+                const pieChart = echarts.init(pieDom);
+                const piedataURL = "{% url 'index:pieall' %}";
+                $.ajax({
+                    url:piedataURL,
+                    dataType: 'json',
+                    success: function(response){
+                        pieChart.setOption(response);
+                    },
+                    error: function(xhr){
+                        console.error('数据加载失败：', xhr.statusText);
+                    }
+                });
+
+                // 加载散点图
+                const scatterDom = document.getElementById('scatterChart');
+                const scatterChart = echarts.init(scatterDom);
+                const scatterdataURL = "{% url 'index:scatterall' %}";
+                $.ajax({
+                    url:scatterdataURL,
+                    dataType: 'json',
+                    success: function(response){
+                        scatterChart.setOption(response);
+                    },
+                    error: function(xhr){
+                        console.error('数据加载失败：', xhr.statusText);
+                    }
+                });
             });
         </script>
 
@@ -120,7 +159,7 @@
             <div class="panel1 map">
                 <h2>中国地图</h2>
                 <div id="mapChart" class="chart"></div>
-                <p class="shentu">注：基于自然资源部标准地图服务网站GS（2024）0650号的标准地图制作，底图边界无修改。</p>
+                <p class="shentu">注：基于自然资源部标准地图服务网站GS京(2022)1061号的标准地图制作，底图边界无修改。</p>
             </div>
         </div>
 

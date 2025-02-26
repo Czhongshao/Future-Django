@@ -441,7 +441,7 @@ def ScatterCharts():
 def MapCharts():
     url = "https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json"
     response = requests.get(url)
-    geo_json = response.json()
+    china_geo = response.json()
     
     data_list_map = {
         'province': ['北京市', '天津市', '上海市', '重庆市', '河北省', '山西省', '辽宁省', '吉林省', '黑龙江省', '江苏省',
@@ -474,6 +474,7 @@ def MapCharts():
     def map_charts(year: str, subtitle_data: int) -> Map:
         map_1 = (
             Map()
+            .add_geo_json(geo_json=china_geo)
             .add(
                 "",
                 [list(z) for z in zip(data_list_map['province'], data_list_map[year])],
