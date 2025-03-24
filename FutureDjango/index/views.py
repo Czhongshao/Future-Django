@@ -37,21 +37,19 @@ from .models import Populations
 from pyecharts.charts import Bar, Timeline
 from pyecharts import options as opts
 
+# 从数据库中获取各省份含全国数据
+populations = Populations.objects.all()
 
-
-# 柱状图绘图：各年份人口前十省份
-def BarCharts():
-    # 从数据库中获取各省份数据
-    populations = Populations.objects.exclude(proviences="全国")
-
-    # 提取所有年份标签
-    years = [
+# 提取所有年份标签
+years = [
         "2005", "2006", "2007", "2008", "2009",
         "2010", "2011", "2012", "2013", "2014",
         "2015", "2016", "2017", "2018", "2019",
         "2020", "2021", "2022", "2023",
     ]
 
+# 柱状图绘图：各年份人口前十省份
+def BarCharts(populations, years):
     # 初始化数据字典
     data_list_bar = {"province": []}
     for year in years:
@@ -59,11 +57,13 @@ def BarCharts():
 
     # 遍历数据库中的每一行数据
     for population in populations:
-        data_list_bar["province"].append(population.proviences)  # 使用模型中的字段名
-        for year in years:
-            # 动态获取字段值
-            field_name = f"number_{year}"
-            data_list_bar[year].append(getattr(population, field_name))
+        # 排除省份名称为“全国”的数据
+        if population.proviences != "全国":
+            data_list_bar["province"].append(population.proviences)  # 使用模型中的字段名
+            for year in years:
+                # 动态获取字段值
+                field_name = f"number_{year}"
+                data_list_bar[year].append(getattr(population, field_name))
 
     # 定义生成柱状图的函数
     def bar_charts(year: str) -> Bar:
@@ -73,9 +73,8 @@ def BarCharts():
         # 过滤掉人口数量为 None 的记录
         valid_data = [(province, population) for province, population in year_data if population is not None]
         
-        # 按人口数量降序排序并取前十
-        top_10_data = sorted(valid_data, key=lambda x: x[1], reverse=True)[:10]
-        
+        # 按人口数量升序排序并取前十
+        top_10_data = sorted(valid_data, key=lambda x: x[1], reverse=False)[-10:]
         # 分离省份名称和人口数据
         bar_xdata, bar_ydata = zip(*top_10_data)
 
@@ -189,7 +188,6 @@ def BarCharts():
 
     timeline_bars = create_timeline()  # 生成时间轴
     return timeline_bars  # 返回时间轴
-
 
 # 饼图绘图：全国男女比
 def PieCharts():
@@ -473,39 +471,26 @@ def ScatterCharts():
     return timeline_chart
 
 # 地图绘图：人口全国分布地图
-def MapCharts():
+def MapCharts(populations, years):
     url = "https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json"
     response = requests.get(url)
     china_geo = response.json()
-    
-    data_list_map = {
-        'province': ['北京市', '天津市', '上海市', '重庆市', '河北省', '山西省', '辽宁省', '吉林省', '黑龙江省', '江苏省',
-                    '浙江省', '安徽省', '福建省', '江西省', '山东省', '河南省', '湖北省', '陕西省', '湖南省', '广东省',
-                    '海南省', '四川省', '贵州省', '云南省', '甘肃省', '青海省', '内蒙古自治区', '广西壮族自治区',
-                    '西藏自治区', '宁夏回族自治区', '新疆维吾尔自治区'],
 
-        '2014年': [2171, 1429, 2467, 3043, 7323, 3528, 4358, 2642, 3608, 8281, 5890, 5997, 3945, 4480, 9808, 9645, 5816,
-                3827, 6611, 11489, 936, 8139, 3677, 4653, 2531, 576, 2449, 4770, 325, 678, 2325],
-        '2015年': [2188, 1439, 2458, 3070, 7345, 3519, 4338, 2613, 3529, 8315, 5985, 6011, 3984, 4485, 9866, 9701, 5850,
-                3846, 6615, 11678, 945, 8196, 3708, 4663, 2523, 577, 2440, 4811, 330, 684, 2385],
-        '2016年': [2195, 1443, 2467, 3110, 7375, 3514, 4327, 2567, 3463, 8381, 6072, 6033, 4016, 4496, 9973, 9778, 5885,
-                3874, 6625, 11908, 957, 8251, 3758, 4677, 2520, 582, 2436, 4857, 340, 695, 2428],
-        '2017年': [2194, 1410, 2466, 3144, 7409, 3510, 4312, 2526, 3399, 8423, 6170, 6057, 4065, 4511, 10033, 9829, 5904,
-                3904, 6633, 12141, 972, 8289, 3803, 4693, 2522, 586, 2433, 4907, 349, 705, 2480],
-        '2018年': [2192, 1383, 2475, 3163, 7426, 3502, 4291, 2484, 3327, 8446, 6273, 6076, 4104, 4513, 10077, 9864, 5917,
-                3931, 6635, 12348, 982, 8321, 3822, 4703, 2515, 587, 2422, 4947, 354, 710, 2520],
-        '2019年': [2190, 1385, 2481, 3188, 7447, 3497, 4277, 2448, 3255, 8469, 6375, 6092, 4137, 4516, 10106, 9901, 5927,
-                3944, 6640, 12489, 995, 8351, 3848, 4714, 2509, 590, 2415, 4982, 361, 717, 2559],
-        '2020年': [2189, 1387, 2488, 3209, 7464, 3490, 4255, 2399, 3171, 8477, 6468, 6105, 4161, 4519, 10165, 9941, 5745,
-                3955, 6645, 12624, 1012, 8371, 3858, 4722, 2501, 593, 2403, 5019, 366, 721, 2590],
-        '2021年': [2189, 1373, 2489, 3212, 7448, 3480, 4229, 2375, 3125, 8505, 6540, 6113, 4187, 4517, 10170, 9883, 5830,
-                3954, 6622, 12684, 1020, 8372, 3852, 4690, 2490, 594, 2400, 5037, 366, 725, 2589],
-        '2022年': [2184, 1363, 2475, 3213, 7420, 3481, 4197, 2348, 3099, 8515, 6577, 6127, 4188, 4528, 10163, 9872, 5844,
-                3956, 6604, 12657, 1027, 8374, 3856, 4693, 2492, 595, 2401, 5047, 364, 728, 2587],
-        'all_people': [137646, 138326, 139232, 140011, 140541, 141008, 141212, 141260, 141175],
-    }
+    # 初始化数据字典
+    data_list_map = {"province": []}
+    for year in years:
+        data_list_map[year] = []
 
+    # 遍历数据库中的每一行数据
+    for population in populations:
+        data_list_map["province"].append(population.proviences)  # 使用模型中的字段名
+        for year in years:
+            # 动态获取字段值
+            field_name = f"number_{year}"
+            data_list_map[year].append(getattr(population, field_name))
 
+    # 获取全国数据索引
+    national_index = data_list_map['province'].index('全国')
     def map_charts(year: str, subtitle_data: int) -> Map:
         map_1 = (
             Map()
@@ -575,13 +560,14 @@ def MapCharts():
                 item_height=200,
             ))
         return map_1
-
+    
     def create_timeline() -> Timeline:
-        time_list = [year for year in data_list_map.keys() if isinstance(year, str) and year.endswith('年')]
         timeline = Timeline(init_opts=opts.InitOpts(width="100%", height="98vh"))
-        for year in time_list:
-            map_chart = map_charts(year, data_list_map['all_people'][time_list.index(year)])
-            timeline.add(map_chart, "{}".format(year))
+        for year in years:
+            national_data = data_list_map[year][national_index]
+            map_chart = map_charts(year, national_data)
+            timeline.add(map_chart, "{}年".format(year))
+
         timeline.add_schema(
             orient="vertical",
             is_auto_play=True,
@@ -599,11 +585,10 @@ def MapCharts():
     return timeline_chart
 
 
-
 # 响应请求
 class BarChartView(APIView):
     def get(self, request):
-        chart = BarCharts()
+        chart = BarCharts(populations=populations, years=years)
         return HttpResponse(
             chart.dump_options_with_quotes(),
             content_type="application/json"
@@ -635,7 +620,7 @@ class ScatterChartView(APIView):
     
 class MapChartView(APIView):
     def get(self, request):
-        chart = MapCharts()
+        chart = MapCharts(populations=populations, years=years)
         return HttpResponse(
             chart.dump_options_with_quotes(),
             content_type ='application/json'
