@@ -70,3 +70,21 @@ Desktop.ini
 # Local development overrides
 .env.local
 .env.*.local
+
+# Jupyter Notebook files
+# Ignore Jupyter Notebook checkpoint files
+.ipynb_checkpoints/
+# Ignore Jupyter Notebook metadata files
+*.ipynb.metadata
+# Ignore Jupyter Notebook output files
+*.ipynb_output
+# Ignore Jupyter Notebook autosave files
+*.ipynb_autosave
+# Ignore Jupyter Notebook temporary files
+*.ipynb_temp
+# Ignore Jupyter Notebook backup files
+*.ipynb.bak
+# Ignore Jupyter Notebook autosaved checkpoints
+.ipynb_autosave_checkpoints/
+# Ignore Jupyter Notebook autosaved metadata
+.ipynb_autosave_metadata/
