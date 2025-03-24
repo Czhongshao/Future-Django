@@ -14,6 +14,7 @@ import json
 # 数据处理库
 import pandas as pd
 import numpy as np
+from index.models import Populations
 
 # 可视化绘图库
 from pyecharts.charts import Bar, Pie, Map, Line, Scatter, Timeline, Grid
@@ -21,34 +22,69 @@ from pyecharts.globals import ThemeType
 from pyecharts import options as opts
 
 
-# Create your views here.
+# 柱状图绘图：各年份人口前十省份
+# Django 响应库
+from django.shortcuts import render
+from django.http import HttpResponse
+
+# DRF 库
+from rest_framework.views import APIView
+
+# 数据库模型
+from .models import Populations
+
+# 可视化绘图库
+from pyecharts.charts import Bar, Timeline
+from pyecharts import options as opts
+
+
 
 # 柱状图绘图：各年份人口前十省份
 def BarCharts():
-    # 数据列表，包含省份和各年份的人口数据
-    data_list_bar = {
-        'province': ['广东省', '山东省', '河南省', '江苏省', '四川省', '河北省', '湖南省', '安徽省', '浙江省', '湖北省'],
-        '2014年': [11489, 9808, 9645, 8281, 8139, 7323, 6611, 5997, 5890, 5816],
-        '2015年': [11678, 9866, 9701, 8315, 8196, 7345, 6615, 6011, 5985, 5850],
-        '2016年': [11908, 9973, 9778, 8381, 8251, 7375, 6625, 6033, 6072, 5885],
-        '2017年': [12141, 10033, 9829, 8423, 8289, 7409, 6633, 6057, 6170, 5904],
-        '2018年': [12348, 10077, 9864, 8446, 8321, 7426, 6635, 6076, 6273, 5917],
-        '2019年': [12489, 10106, 9901, 8469, 8351, 7447, 6640, 6092, 6375, 5927],
-        '2020年': [12624, 10165, 9941, 8477, 8371, 7464, 6645, 6468, 6105, 5745],
-        '2021年': [12684, 10170, 9883, 8505, 8372, 7448, 6622, 6113, 6540, 5830],
-        '2022年': [12657, 10163, 9872, 8515, 8374, 7420, 6604, 6127, 6577, 5844],
-    }
+    # 从数据库中获取各省份数据
+    populations = Populations.objects.exclude(proviences="全国")
 
+    # 提取所有年份标签
+    years = [
+        "2005", "2006", "2007", "2008", "2009",
+        "2010", "2011", "2012", "2013", "2014",
+        "2015", "2016", "2017", "2018", "2019",
+        "2020", "2021", "2022", "2023",
+    ]
+
+    # 初始化数据字典
+    data_list_bar = {"province": []}
+    for year in years:
+        data_list_bar[year] = []
+
+    # 遍历数据库中的每一行数据
+    for population in populations:
+        data_list_bar["province"].append(population.proviences)  # 使用模型中的字段名
+        for year in years:
+            # 动态获取字段值
+            field_name = f"number_{year}"
+            data_list_bar[year].append(getattr(population, field_name))
+
+    # 定义生成柱状图的函数
     def bar_charts(year: str) -> Bar:
-        bar_xdata = data_list_bar['province']  # X轴数据为省份名称
-        bar_ydata = data_list_bar[year]  # Y轴数据为指定年份的人口数据
+        # 获取当前年份的人口数据
+        year_data = list(zip(data_list_bar['province'], data_list_bar[year]))
+        
+        # 过滤掉人口数量为 None 的记录
+        valid_data = [(province, population) for province, population in year_data if population is not None]
+        
+        # 按人口数量降序排序并取前十
+        top_10_data = sorted(valid_data, key=lambda x: x[1], reverse=True)[:10]
+        
+        # 分离省份名称和人口数据
+        bar_xdata, bar_ydata = zip(*top_10_data)
 
         bar = (
             Bar(init_opts=opts.InitOpts(width="100%", height="100%"))  # 初始化柱状图，设置宽度和高度
-            .add_xaxis(bar_xdata)  # 添加X轴数据
+            .add_xaxis(list(bar_xdata))  # 添加X轴数据
             .add_yaxis(
                 series_name="",  # 系列名称
-                y_axis=bar_ydata,  # Y轴数据
+                y_axis=list(bar_ydata),  # Y轴数据
                 label_opts=opts.LabelOpts(  # 设置标签样式
                     is_show=True,  # 显示标签
                     position="insideRight",  # 标签位置在右侧
@@ -86,7 +122,7 @@ def BarCharts():
                 ),
                 tooltip_opts=opts.TooltipOpts(is_show=False),  # 不显示提示框
                 title_opts=opts.TitleOpts(  # 标题配置
-                    title="{}中国top10省人口".format(year),  # 标题内容
+                    title="{}年中国top10省人口".format(year),  # 标题内容
                     subtitle="数据来源：国家统计局",  # 副标题内容
                     pos_left="50%",  # 标题水平居中
                     pos_top="0%",  # 标题在顶部
@@ -129,15 +165,13 @@ def BarCharts():
             )
         )
         return grid
-
     # 创建时间轴
     def create_timeline() -> Timeline:
-        time_list = [year for year in data_list_bar.keys() if isinstance(year, str) and year.endswith('年')]  # 获取所有年份
         timeline = Timeline(init_opts=opts.InitOpts(width="100%", height="100vh"))  # 初始化时间轴，设置宽度和高度
 
-        for year in time_list:
+        for year in years:
             bar_chart = bar_charts(year)  # 生成对应年份的柱状图
-            timeline.add(bar_chart, "{}".format(year))  # 将柱状图添加到时间轴中
+            timeline.add(bar_chart, "{}年".format(year))  # 将柱状图添加到时间轴中
 
         timeline.add_schema(  # 设置时间轴配置
             orient="vertical",  # 垂直方向
@@ -155,6 +189,7 @@ def BarCharts():
 
     timeline_bars = create_timeline()  # 生成时间轴
     return timeline_bars  # 返回时间轴
+
 
 # 饼图绘图：全国男女比
 def PieCharts():

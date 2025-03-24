@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>人口数据</title>
+</head>
+<body>
+<table border="1">
+    <thead>
+    <tr>
+        <td>省份、自治区、以及全国</td>
+        <td>2023年末总人口数量</td>
+        <td>2022年末总人口数量</td>
+        <td>2021年末总人口数量</td>
+        <td>2020年末总人口数量</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for s in population_queryset %}
+        <tr>
+            <td>{{ s.province }}</td>
+            <td>{{ s.year_2023 }}</td>
+            <td>{{ s.year_2022 }}</td>
+            <td>{{ s.year_2021 }}</td>
+            <td>{{ s.year_2020 }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
