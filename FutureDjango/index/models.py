@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Populations(models.Model):
-    proviences = models.CharField(db_column='Proviences', primary_key=True, max_length=50)  # Field name made lowercase.
+    proviences = models.CharField(db_column='Proviences', primary_key=True, max_length=50)
     number_2023 = models.IntegerField(db_column='2023', blank=True, null=True)  
     number_2022 = models.IntegerField(db_column='2022', blank=True, null=True)  
     number_2021 = models.IntegerField(db_column='2021', blank=True, null=True)  
@@ -26,3 +26,30 @@ class Populations(models.Model):
     class Meta:
         managed = False
         db_table = 'populations'
+
+
+# 获取省份（含全国）名称表
+class Provinces(models.Model):
+    province_name = models.CharField(verbose_name='省份', unique=True, max_length=50)
+
+    class Meta:
+        managed = False
+        db_table = 'provinces'
+
+    def __str__(self):
+        return self.province_name
+    
+
+# 获取省份（含全国）年末总人口数据表
+class PopulationData(models.Model):
+    province = models.ForeignKey(Provinces, on_delete=models.CASCADE)
+    year = models.IntegerField(verbose_name = "年份")
+    population_all = models.IntegerField(verbose_name = "年末总人口（万人）", blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'population_data'
+
+    def __str__(self):
+        return f"{self.province.province_name} - {self.year}"
+

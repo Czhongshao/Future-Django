@@ -14,7 +14,8 @@ import json
 # 数据处理库
 import pandas as pd
 import numpy as np
-from index.models import Populations
+from index.models import Populations, PopulationData
+from django.db.models import Max, Min
 
 # 可视化绘图库
 from pyecharts.charts import Bar, Pie, Map, Line, Scatter, Timeline, Grid
@@ -30,24 +31,30 @@ from django.http import HttpResponse
 # DRF 库
 from rest_framework.views import APIView
 
-# 数据库模型
-from .models import Populations
-
 # 可视化绘图库
 from pyecharts.charts import Bar, Timeline
 from pyecharts import options as opts
 
 # 从数据库中获取各省份含全国数据
-populations = Populations.objects.all()
+# populations = Populations.objects.all()
+populations = PopulationData.objects.all().select_related('province')
+
 
 # 提取所有年份标签
-years = [
-        "2005", "2006", "2007", "2008", "2009",
-        "2010", "2011", "2012", "2013", "2014",
-        "2015", "2016", "2017", "2018", "2019",
-        "2020", "2021", "2022", "2023",
-    ]
+# years = [
+#         "2005", "2006", "2007", "2008", "2009",
+#         "2010", "2011", "2012", "2013", "2014",
+#         "2015", "2016", "2017", "2018", "2019",
+#         "2020", "2021", "2022", "2023",
+#     ]
+# 从数据库中获取所有年份的最大值和最小值
+max_year = PopulationData.objects.all().aggregate(Max('year'))['year__max']
+min_year = PopulationData.objects.all().aggregate(Min('year'))['year__min']
+# 生成年份列表
+years = [str(year) for year in range(min_year, max_year + 1)]
 
+
+# 柱状图绘图：各年份人口前十省份
 # 柱状图绘图：各年份人口前十省份
 def BarCharts(populations, years):
     # 初始化数据字典
@@ -58,12 +65,17 @@ def BarCharts(populations, years):
     # 遍历数据库中的每一行数据
     for population in populations:
         # 排除省份名称为“全国”的数据
-        if population.proviences != "全国":
-            data_list_bar["province"].append(population.proviences)  # 使用模型中的字段名
-            for year in years:
-                # 动态获取字段值
-                field_name = f"number_{year}"
-                data_list_bar[year].append(getattr(population, field_name))
+        if population.province.province_name != "全国":
+            # 添加省份名称（确保不重复）
+            if population.province.province_name not in data_list_bar["province"]:
+                data_list_bar["province"].append(population.province.province_name)
+            # 动态获取字段值
+            field_name = f"population_all"  # 假设字段名是 population_all
+            year = str(population.year)  # 获取年份
+            if year in data_list_bar:
+                # 确保每个省份的每个年份数据只添加一次
+                if len(data_list_bar[year]) < len(data_list_bar["province"]):
+                    data_list_bar[year].append(getattr(population, field_name))
 
     # 定义生成柱状图的函数
     def bar_charts(year: str) -> Bar:
@@ -73,8 +85,9 @@ def BarCharts(populations, years):
         # 过滤掉人口数量为 None 的记录
         valid_data = [(province, population) for province, population in year_data if population is not None]
         
-        # 按人口数量升序排序并取前十
+        # 按人口数量降序排序并取前十
         top_10_data = sorted(valid_data, key=lambda x: x[1], reverse=False)[-10:]
+        
         # 分离省份名称和人口数据
         bar_xdata, bar_ydata = zip(*top_10_data)
 
@@ -164,6 +177,7 @@ def BarCharts(populations, years):
             )
         )
         return grid
+
     # 创建时间轴
     def create_timeline() -> Timeline:
         timeline = Timeline(init_opts=opts.InitOpts(width="100%", height="100vh"))  # 初始化时间轴，设置宽度和高度
@@ -483,11 +497,17 @@ def MapCharts(populations, years):
 
     # 遍历数据库中的每一行数据
     for population in populations:
-        data_list_map["province"].append(population.proviences)  # 使用模型中的字段名
-        for year in years:
-            # 动态获取字段值
-            field_name = f"number_{year}"
-            data_list_map[year].append(getattr(population, field_name))
+        # 添加省份名称（确保不重复）
+        if population.province.province_name not in data_list_map["province"]:
+            data_list_map["province"].append(population.province.province_name)
+        # 动态获取字段值
+        field_name = f"population_all"  # 假设字段名是 population_all
+        year = str(population.year)  # 获取年份
+        if year in data_list_map:
+            # 确保每个省份的每个年份数据只添加一次
+            if len(data_list_map[year]) < len(data_list_map["province"]):
+                    data_list_map[year].append(getattr(population, field_name))
+
 
     # 获取全国数据索引
     national_index = data_list_map['province'].index('全国')
