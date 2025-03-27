@@ -35,20 +35,25 @@ class Provinces(models.Model):
     class Meta:
         managed = False
         db_table = 'provinces'
+        verbose_name = '省份'
+        verbose_name_plural = '省份'
 
     def __str__(self):
         return self.province_name
     
 
-# 获取省份（含全国）年末总人口数据表
+# 获取省份（含全国）人口数据表
 class PopulationData(models.Model):
     province = models.ForeignKey(Provinces, on_delete=models.CASCADE)
     year = models.IntegerField(verbose_name = "年份")
-    population_all = models.IntegerField(verbose_name = "年末总人口（万人）", blank=True, null=True)
+    total = models.IntegerField(verbose_name = "年末总人口（万人）", blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'population_data'
+        verbose_name = '中国人口数据'
+        verbose_name_plural = '中国人口数据'
+
 
     def __str__(self):
         return f"{self.province.province_name} - {self.year}"

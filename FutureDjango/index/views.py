@@ -70,7 +70,7 @@ def BarCharts(populations, years):
             if population.province.province_name not in data_list_bar["province"]:
                 data_list_bar["province"].append(population.province.province_name)
             # 动态获取字段值
-            field_name = f"population_all"  # 假设字段名是 population_all
+            field_name = f"total"  # 假设字段名是 total
             year = str(population.year)  # 获取年份
             if year in data_list_bar:
                 # 确保每个省份的每个年份数据只添加一次
@@ -501,7 +501,7 @@ def MapCharts(populations, years):
         if population.province.province_name not in data_list_map["province"]:
             data_list_map["province"].append(population.province.province_name)
         # 动态获取字段值
-        field_name = f"population_all"  # 假设字段名是 population_all
+        field_name = f"total"  # 假设字段名是 total
         year = str(population.year)  # 获取年份
         if year in data_list_map:
             # 确保每个省份的每个年份数据只添加一次

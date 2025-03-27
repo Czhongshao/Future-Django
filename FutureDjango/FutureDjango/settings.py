@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'simpleui',
     'index',
     'rest_framework',
     'django.contrib.admin',
@@ -137,3 +138,13 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# LOGO
+# SIMPLEUI_LOGO = 'FutureDjango\LOGOS\logo\LOGO1.png'
+
+# 隐藏simpleui 主页信息
+SIMPLEUI_HOME_INFO = False
+SIMPLEUI_ANALYSIS = False 
+
+# 设置默认主题，指向主题css文件名。紫色风格
+SIMPLEUI_DEFAULT_THEME = 'purple.css'
