@@ -646,7 +646,7 @@ class BarChartView(APIView):
     
 class PieChartView(APIView):
     def get(self, request):
-        chart = PieCharts(populations, years)
+        chart = PieCharts(populations=populations, years=years)
         return HttpResponse(
             chart.dump_options_with_quotes(),
             content_type='application/json'
@@ -654,7 +654,7 @@ class PieChartView(APIView):
     
 class LineChartView(APIView):
     def get(self, request):
-        chart = LineCharts(populations, years)
+        chart = LineCharts(populations=populations, years=years)
         return HttpResponse(
             chart.dump_options_with_quotes(),
             content_type='application/json'

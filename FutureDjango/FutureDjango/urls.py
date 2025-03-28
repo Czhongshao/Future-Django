@@ -7,4 +7,5 @@ urlpatterns = [
     path('', include('index.urls', namespace='index')),
     path('admin/', admin.site.urls),
     # path('population/', views.population_list, name='population_list'),
+    path('api/', include('books.urls')), # 访问api
 ]
