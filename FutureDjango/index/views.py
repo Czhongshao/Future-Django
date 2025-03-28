@@ -14,7 +14,7 @@ import json
 # 数据处理库
 import pandas as pd
 import numpy as np
-from index.models import Populations, PopulationData
+from index.models import PopulationData
 from django.db.models import Max, Min
 
 # 可视化绘图库
@@ -48,13 +48,14 @@ populations = PopulationData.objects.all().select_related('province')
 #         "2020", "2021", "2022", "2023",
 #     ]
 # 从数据库中获取所有年份的最大值和最小值
-max_year = PopulationData.objects.all().aggregate(Max('year'))['year__max']
-min_year = PopulationData.objects.all().aggregate(Min('year'))['year__min']
+# max_year = PopulationData.objects.all().aggregate(Max('year'))['year__max']
+# min_year = PopulationData.objects.all().aggregate(Min('year'))['year__min']
+max_year = 2023
+min_year = 2005
 # 生成年份列表
 years = [str(year) for year in range(min_year, max_year + 1)]
 
 
-# 柱状图绘图：各年份人口前十省份
 # 柱状图绘图：各年份人口前十省份
 def BarCharts(populations, years):
     # 初始化数据字典
@@ -204,31 +205,36 @@ def BarCharts(populations, years):
     return timeline_bars  # 返回时间轴
 
 # 饼图绘图：全国男女比
-def PieCharts():
-    data_list_pie = {
-        'gender': ['男', '女'],
-        '2014年': [70522, 67124],
-        '2015年': [70857, 67469],
-        '2016年': [71307, 67925],
-        '2017年': [71650, 68361],
-        '2018年': [71864, 68677],
-        '2019年': [72039, 68969],
-        '2020年': [72357, 68855],
-        '2021年': [72311, 68949],
-        '2022年': [72206, 68969],
-    }
+def PieCharts(populations, years):
+    # 初始化数据字典
+    data_list_pie = {"year": [], "man": [], "woman": []}
 
+    # 遍历数据库中的每一行数据
+    for population in populations:
+        # 只提取省份名称为“全国”的数据
+        if population.province.province_name == "全国":
+            # 动态获取字段值
+            year = str(population.year)  # 获取年份
+            if year in years:
+                data_list_pie["year"].append(year)
+                data_list_pie["man"].append(population.man)
+                data_list_pie["woman"].append(population.woman)
+
+    # 定义生成饼图的函数
     def pie_charts(year: str) -> Pie:
-        data = data_list_pie[year]
-        gender = data_list_pie['gender']
+        # 获取当前年份的男女数据
+        man = data_list_pie["man"][data_list_pie["year"].index(year)]
+        woman = data_list_pie["woman"][data_list_pie["year"].index(year)]
+        data = [("男", man), ("女", woman)]
         colors = ["#87CEEB", "#FF69B4"]  # 男性浅蓝色，女性粉色
+
         pie_1 = (
             Pie(init_opts=opts.InitOpts(theme=ThemeType.LIGHT))
             .add(
-                "",
-                [list(z) for z in zip(gender, data)],
-                radius=["0%", "75%"],  # 内圆0,外圆200px
-                center=['50%', '60%'],
+                series_name="性别比例",
+                data_pair=data,
+                radius=["0%", "75%"],  # 内圆0,外圆75%
+                center=["50%", "60%"],
                 rosetype="radius",
                 label_opts=opts.LabelOpts(
                     position="outside",
@@ -239,7 +245,7 @@ def PieCharts():
             )
             .set_global_opts(
                 title_opts=opts.TitleOpts(
-                    title="{}性别比例图".format(year),
+                    title="{}年全国性别比例图".format(year),
                     subtitle="数据来源：国家统计局",
                     pos_left="50%",
                     pos_top="0%",
@@ -255,7 +261,6 @@ def PieCharts():
                         color="grey",
                     ),
                 ),
-
                 legend_opts=opts.LegendOpts(
                     is_show=False,
                     orient="vertical",
@@ -269,102 +274,127 @@ def PieCharts():
         )
         return pie_1
 
+    # 创建时间轴
     def create_timeline() -> Timeline:
-        time_list = [year for year in data_list_pie.keys() if isinstance(year, str) and year.endswith('年')]
-        timeline = Timeline(init_opts=opts.InitOpts(width="100%", height="100vh"))
-        for year in time_list:
-            pie_chart = pie_charts(year)
-            timeline.add(pie_chart, year)
+        timeline = Timeline(init_opts=opts.InitOpts(width="100%", height="100vh"))  # 初始化时间轴，设置宽度和高度
+
+        for year in data_list_pie["year"]:
+            pie_chart = pie_charts(year)  # 生成对应年份的饼图
+            timeline.add(pie_chart, "{}年".format(year))  # 将饼图添加到时间轴中
+
         timeline.add_schema(
-            orient="vertical",
-            is_auto_play=True,
-            play_interval=3000,
-            pos_right="0%",
-            pos_top="middle",
-            width="75px",
-            label_opts=opts.LabelOpts(is_show=True, color="#fff"),
-            linestyle_opts=opts.LineStyleOpts(width=2, color="#000"),
-            is_timeline_show=False,
+            orient="vertical",  # 垂直方向
+            is_auto_play=True,  # 自动播放
+            play_interval=3000,  # 播放间隔
+            pos_right="0%",  # 时间轴位置
+            pos_top="middle",  # 时间轴位置
+            width="75px",  # 时间轴宽度
+            label_opts=opts.LabelOpts(is_show=True, color="#fff"),  # 时间轴标签样式
+            linestyle_opts=opts.LineStyleOpts(width=2, color="#000"),  # 时间轴线条样式
+            is_timeline_show=False,  # 不显示时间轴
         )
         return timeline
-    
-    timeline_chart = create_timeline()
-    return timeline_chart
 
-# 折线图绘图：全国各年份出生率
-def LineCharts():
-    c = (
-        Line()
-        .add_xaxis
-            (["2013年", "2014年",  "2015年", "2016年", "2017年", "2018年", "2019年", "2020年", "2021年", "2022年"])
-        .add_yaxis(
-            series_name='出生率(‰)',
-            y_axis=[13.03, 13.83, 11.99, 13.57, 12.64, 10.86, 10.41, 8.52, 7.52, 6.77],
-            label_opts=opts.LabelOpts(
-                is_show=True,
-                position="top",
-                font_size=14,
-                color="#33FFFF",
-            ),
-            symbol_size=8,
-            symbol="circle",
-            color="#33FFFF",
+    timeline_chart = create_timeline()  # 生成时间轴
+    return timeline_chart  # 返回时间轴
+
+# 折线图绘图：全国各年份出生率、自然增长率
+def LineCharts(populations, years):
+    # 初始化数据字典，用于存储年份和对应的出生率、自然增长率
+    data_list_line = {"year": [], "birth_rate": [], "nature_growth_rate": []}
+
+    # 遍历数据库中的每一行数据
+    for population in populations:
+        # 只提取省份名称为“全国”的数据
+        if population.province.province_name == "全国":
+            # 动态获取字段值
+            year = str(population.year)  # 获取年份
+            if year in years:
+                data_list_line["year"].append(year)  # 添加年份
+                data_list_line["birth_rate"].append(population.birth_rate)  # 添加出生率
+                data_list_line["nature_growth_rate"].append(population.nature_growth_rate)  # 添加自然增长率
+    # 定义生成折线图的函数
+    def line_charts() -> Line:
+        # 获取年份和对应的数据
+        x_axis = data_list_line["year"][::-1]  # X轴数据（年份）
+        birth_rate = data_list_line["birth_rate"][::-1] # 出生率数据
+        nature_growth_rate = data_list_line["nature_growth_rate"][::-1]  # 自然增长率数据
+
+        # 创建 Line 图表对象
+        line = (
+            Line()
+            .add_xaxis(x_axis)  # 添加 X 轴数据（年份）
+            .add_yaxis(
+                series_name='出生率(‰)',  # 系列名称
+                y_axis=birth_rate,  # Y 轴数据（出生率）
+                label_opts=opts.LabelOpts(  # 设置标签样式
+                    is_show=True,  # 显示标签
+                    position="top",  # 标签位置在顶部
+                    font_size=14,  # 标签字体大小
+                    color="#33FFFF",  # 标签字体颜色
+                ),
+                symbol_size=8,  # 图标大小
+                symbol="circle",  # 图标形状
+                color="#33FFFF",  # 线条颜色
+            )
+            .add_yaxis(
+                series_name='自然增长率(‰)',  # 系列名称
+                y_axis=nature_growth_rate,  # Y 轴数据（自然增长率）
+                label_opts=opts.LabelOpts(  # 设置标签样式
+                    is_show=True,  # 显示标签
+                    position="top",  # 标签位置在顶部
+                    font_size=14,  # 标签字体大小
+                    color="#33FF99",  # 标签字体颜色
+                ),
+                symbol_size=8,  # 图标大小
+                symbol="circle",  # 图标形状
+                color="#33FF99",  # 线条颜色
+            )
+            .set_global_opts(  # 设置全局配置项
+                title_opts=opts.TitleOpts(  # 标题配置
+                    title="全国出生率与自然增长率",  # 标题内容
+                    subtitle="2005-2023年 数据来源：国家统计局",  # 副标题内容
+                    pos_left="45%",  # 标题水平居中
+                    pos_top="0%",  # 标题在顶部
+                    text_align="center",  # 标题文本居中
+                    title_textstyle_opts=opts.TextStyleOpts(  # 标题文本样式
+                        font_size=16,  # 标题字体大小
+                        font_weight="bold",  # 标题字体加粗
+                        color="white",  # 标题字体颜色
+                    ),
+                    subtitle_textstyle_opts=opts.TextStyleOpts(  # 副标题文本样式
+                        font_size=12,  # 副标题字体大小
+                        font_weight="bold",  # 副标题字体加粗
+                        color="grey",  # 副标题字体颜色
+                    ),
+                ),
+                xaxis_opts=opts.AxisOpts(  # X轴配置
+                    axislabel_opts=opts.LabelOpts(  # X轴标签样式
+                        font_size=10,  # 标签字体大小
+                        is_show=True,  # 显示标签
+                    ),
+                    splitline_opts=opts.SplitLineOpts(is_show=False),  # 不显示分割线
+                ),
+                yaxis_opts=opts.AxisOpts(  # Y轴配置
+                    axislabel_opts=opts.LabelOpts(  # Y轴标签样式
+                        font_size=13,  # 标签字体大小
+                    ),
+                ),
+                legend_opts=opts.LegendOpts(  # 图例配置
+                    orient="vertical",  # 图例方向
+                    pos_top="0%",  # 图例位置
+                    pos_right="0%",  # 图例位置
+                    textstyle_opts=opts.TextStyleOpts(  # 图例文本样式
+                        font_size=10,  # 图例字体大小
+                        color="white",  # 图例字体颜色
+                    )
+                ),
+            )
         )
-        .add_yaxis(
-            series_name='自然增长率(‰)',
-            y_axis=[5.90, 6.71, 4.93, 6.53, 5.58, 3.78, 3.32, 1.45, 0.34, -0.60],
-            label_opts=opts.LabelOpts(
-                is_show=True,
-                position="top",
-                font_size=14,
-                color="#33FF99",
-            ),
-            symbol_size=8,
-            symbol="circle",
-            color="#33FF99",
-        )
-        .set_global_opts(
-            title_opts=opts.TitleOpts(
-                title="全国出生率与生育率",
-                subtitle="2013-2022年 数据来源：国家统计局",
-                pos_left="45%",
-                pos_top="0%",
-                text_align="center",
-                title_textstyle_opts=opts.TextStyleOpts(
-                    font_size=16,
-                    font_weight="bold",
-                    color="white",
-                ),
-                subtitle_textstyle_opts=opts.TextStyleOpts(
-                    font_size=12,
-                    font_weight="bold",
-                    color="grey",
-                ),
-            ),
-            xaxis_opts=opts.AxisOpts(
-                axislabel_opts=opts.LabelOpts(
-                    font_size=10,
-                    is_show=False,
-                ),
-                splitline_opts=opts.SplitLineOpts(is_show=False),
-            ),
-            yaxis_opts=opts.AxisOpts(
-                axislabel_opts=opts.LabelOpts(
-                    font_size=13,
-                ),
-            ),
-            legend_opts=opts.LegendOpts(
-                orient="vertical",
-                pos_top="0%",
-                pos_right="0%",
-                textstyle_opts=opts.TextStyleOpts(
-                    font_size=10,
-                    color="white",
-                )
-            ),
-        )
-    )
-    return c
+        return line
+
+    # 返回生成的折线图
+    return line_charts()
 
 # 散点图绘图：各个行业各年份工资散点图
 def ScatterCharts():
@@ -595,7 +625,7 @@ def MapCharts(populations, years):
             pos_right="0%",
             pos_top="middle",
             width="75px",
-            height="400px",
+            height="75%",
             label_opts=opts.LabelOpts(is_show=True, color="#fff"),
             linestyle_opts=opts.LineStyleOpts(width=2, color="#000"),
         )
@@ -616,7 +646,7 @@ class BarChartView(APIView):
     
 class PieChartView(APIView):
     def get(self, request):
-        chart = PieCharts()
+        chart = PieCharts(populations, years)
         return HttpResponse(
             chart.dump_options_with_quotes(),
             content_type='application/json'
@@ -624,7 +654,7 @@ class PieChartView(APIView):
     
 class LineChartView(APIView):
     def get(self, request):
-        chart = LineCharts()
+        chart = LineCharts(populations, years)
         return HttpResponse(
             chart.dump_options_with_quotes(),
             content_type='application/json'

@@ -40,12 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'web.apps.WebConfig',
+    # 'web.apps.WebConfig',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -114,6 +116,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+# 支持跨域配置开始
+# 增加跨域忽略
+CORS_ORIGIN_ALLOW_ALL = True
+# 允许所有方法
+CORS_ALLOW_METHODS = ('*')
+# 允许所有请求头
+CORS_ALLOW_HEADERS = ('*')
+# 允许携带cookie
+CORS_ALLOW_CREDENTIALS = True 
+ 
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
