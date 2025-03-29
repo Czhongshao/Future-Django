@@ -1,20 +1,20 @@
 # Django项目创建流程
 
-### 一、通过命令行创建标准的Django项目
+## 一、通过命令行创建标准的Django项目
 
-1. 找到想要存放项目的文件通过命令行 ==***django-admin startproject 项目名称***== 
+1. 找到想要存放项目的文件通过命令行 ==***django-admin startproject 项目名称***==
 2. 通过命令 ==***tree /F***== 得到当前的文件结构
 
 ```markdown
 ## 以下是得到的默认项目文件结构
 └─DjangoFor4C
-    ├─manage.py 				【关键：项目管理、启动项目、创建app、数据管理】
+    ├─manage.py     【关键：项目管理、启动项目、创建app、数据管理】
     │
-    └─DjangoFor4C 				【与项目名称相同】
-        ├─ asgi.py				【接收网络请求】
-        ├─ settings.py			【**项目配置文件**】	   【经常需要操作】
-        ├─ urls.py				【**URL和函数的对应关系**】 【经常需要操作】
-        ├─ wsgi.py				【接收网络请求】
+    └─DjangoFor4C     【与项目名称相同】
+        ├─ asgi.py    【接收网络请求】
+        ├─ settings.py   【**项目配置文件**】    【经常需要操作】
+        ├─ urls.py    【**URL和函数的对应关系**】 【经常需要操作】
+        ├─ wsgi.py    【接收网络请求】
         └─ __init__.py
 ```
 
@@ -22,13 +22,13 @@
 
 ```
 -项目
-	- app，用户管理 【表结构、函数、HTML模板、CSS】
-	- app，订单管理 【表结构、函数、HTML模板、CSS】
-	- app，后台管理 【表结构、函数、HTML模板、CSS】
-	- app，某网站   【表结构、函数、HTML模板、CSS】
-	- app，API	  【表结构、函数、HTML模板、CSS】
-	··
-	
+ - app，用户管理 【表结构、函数、HTML模板、CSS】
+ - app，订单管理 【表结构、函数、HTML模板、CSS】
+ - app，后台管理 【表结构、函数、HTML模板、CSS】
+ - app，某网站   【表结构、函数、HTML模板、CSS】
+ - app，API   【表结构、函数、HTML模板、CSS】
+ ··
+ 
 注意：开发简洁的情况下不需要创建多app，一般项目下只需要创建一个app
 ```
 
@@ -41,22 +41,22 @@
 └─DjangoFor4C
     ├─ manage.py
     │
-    ├─app1						【app的名称】
-    │  ├─ admin.py				【固定，不要修改】   【django默认提供的admin后台管理】
-    │  ├─ apps.py				【固定，不需要修改】 【app启动类】
-    │  ├─ models.py				【**关键**】	   【对数据库操作】
-    │  ├─ tests.py				【固定，不要修改】   【进行项目的单元测试】
-    |  └─ migrations			【固定，不要修改】   【数据库字段变更记录】		
-    │  │  └── __init__.py		
-    │  ├─ views.py				【**关键**】	   【视图函数等】
+    ├─app1      【app的名称】
+    │  ├─ admin.py    【固定，不要修改】   【django默认提供的admin后台管理】
+    │  ├─ apps.py    【固定，不需要修改】 【app启动类】
+    │  ├─ models.py    【**关键**】    【对数据库操作】
+    │  ├─ tests.py    【固定，不要修改】   【进行项目的单元测试】
+    |  └─ migrations   【固定，不要修改】   【数据库字段变更记录】  
+    │  │  └── __init__.py  
+    │  ├─ views.py    【**关键**】    【视图函数等】
     │  └─ __init__.py
     │  
     │
-    └─DjangoFor4C 	
-        ├─ asgi.py	
+    └─DjangoFor4C  
+        ├─ asgi.py 
         ├─ settings.py
-        ├─ urls.py				【URL-->函数】
-        ├─ wsgi.py	
+        ├─ urls.py    【URL-->函数】
+        ├─ wsgi.py 
         └─ __init__.py
 ```
 
@@ -65,7 +65,7 @@
 #### 1、注册app 【DjangoFor4C/settings.py】
 
 1. 在 ==***DjangoFor4C/settings.py***== 文件当中，找到INSTALLED_APPS，并在其中添加创建的app
-2.  ==***app1***== 或者是 ==***app1.apps.App1Config***== 均可
+2. ==***app1***== 或者是 ==***app1.apps.App1Config***== 均可
 
 #### 2、编写URL和视图函数对应关系
 
@@ -137,7 +137,7 @@
     def users_list(request):
         # 默认去"app1/"路径下寻找"templates/"当中的html文件
         # 根据app的注册顺序【DjangoFor4C/setting.py当中的APP顺序】，逐一去"templates"当中找
-    	return render(request, "users_list.html")
+     return render(request, "users_list.html")
     ```
 
   - 在 ==***DjangoFor4C/urls***== 中写入path
@@ -157,12 +157,10 @@
              # 填写如下就会优先在根目录的templates当中查找，再根据注册顺序查找
             'DIRS': [os.path.join(BASE_DIR, 'templates')], 
             'APP_DIRS': True,
-    		······ # 省略
+      ······ # 省略
         },
     ]
     ```
-
-    
 
 ### 五、static静态文件的使用
 
@@ -198,7 +196,7 @@
 
   2. 在pycharm当中只有方法1能够索引到对应文件
 
-     **不过两者都不影响浏览器上的正常使用显示** 
+     **不过两者都不影响浏览器上的正常使用显示**
 
 - 放入静态文件
 
@@ -229,10 +227,10 @@
       │      └─ bootstrap-5.1.0-dist
       │          │
       │          ├─css
-      |		   | └─(省略)
+      |     | └─(省略)
       │          │
       │          └─js
-      │			 └─(省略)
+      │    └─(省略)
       ├─templates
       │      users_add.html
       │      users_list.html
@@ -240,22 +238,48 @@
 
 - 可能需要微调修改？
 
-  ​	在 **==*DjangoFor4C/settings.py*==** 文件当中修改 ==***STATIC_URL = '/static/'***== 可能会解决图片无法显示的问题
-
-
-
-
-
-
+  在 **==*DjangoFor4C/settings.py*==** 文件当中修改 ==***STATIC_URL = '/static/'***== 可能会解决图片无法显示的问题
 
 # Vue3项目创建流程
 
 ## 创建vue项目
- - npm install -g @vue/cli
- - vue create FutureFront
- - npm install
- - npm install vue-resource
- - npm install element-plus
 
+- npm install -g @vue/cli
+- vue create FutureFront
+- npm install
+- npm install vue-resource
+- npm install element-plus
+
+## 创建vue3项目
+
+- npm init vue@latest
+- 下载相关依赖
+  - npm install
+- 下载网络请求、路由、状态管理
+  - npm install axios vue-router pinia
+  - npm install echarts vue-echarts
+  - npm install @vitejs/plugin-vue
+
+### 运行vue3项目
+
+- npm run dev
+ [http://localhost:5173/]
+
+appfront/
+├── public/                 # 静态资源根目录（保持与Django相同结构）
+│   ├── static/            # 原Django静态文件目录
+│   │   ├── css/
+│   │   │   └── index.css  # 你的自定义样式文件
+│   │   ├── js/
+│   │   │   ├── flexible.js
+│   │   │   └── echarts.min.js
+│   │   ├── img/
+│   │   │   └── back01.mp4 # 背景视频
+│   │   └── plugins/       # 第三方库
+│   │       ├── bootstrap-5.1.0-dist/
+│   │       └── assets/v5/maps/china.js
+├── src/
+│   └── App.vue           # 主组件
+└── vite.config.js        # 配置文件
 
 ## 解决跨域问题

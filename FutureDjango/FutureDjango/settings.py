@@ -32,7 +32,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'simpleui',
-    'index',
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -40,8 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'web.apps.WebConfig',
     'corsheaders',
+
+    'index',
 ]
 
 MIDDLEWARE = [
@@ -120,16 +120,29 @@ AUTH_PASSWORD_VALIDATORS = [
 # 支持跨域配置开始
 # 增加跨域忽略
 CORS_ORIGIN_ALLOW_ALL = True
+# 允许域名访问
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:5173', # vite默认端口
+# ]
 # 允许所有方法
 CORS_ALLOW_METHODS = ('*')
 # 允许所有请求头
 CORS_ALLOW_HEADERS = ('*')
 # 允许携带cookie
 CORS_ALLOW_CREDENTIALS = True 
-# 允许域名访问
-# CORS_ORIGIN_WHITELIST = (
-#     'localhost:8080',
-# )
+
+
+# 补充更完整的 DRF 配置
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',  # 默认权限策略
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20
+}
  
 
 # Internationalization
