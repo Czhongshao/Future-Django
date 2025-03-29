@@ -33,7 +33,6 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'simpleui',
     'index',
-    'books',
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -50,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware', # csrf认证，返回csrf_token机制：vue3向django发送post请求通信的方法
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -127,6 +126,10 @@ CORS_ALLOW_METHODS = ('*')
 CORS_ALLOW_HEADERS = ('*')
 # 允许携带cookie
 CORS_ALLOW_CREDENTIALS = True 
+# 允许域名访问
+# CORS_ORIGIN_WHITELIST = (
+#     'localhost:8080',
+# )
  
 
 # Internationalization

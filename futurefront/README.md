@@ -1,4 +1,4 @@
-# appfront
+# futurefront
 
 ## Project setup
 ```

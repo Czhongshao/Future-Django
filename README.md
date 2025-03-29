@@ -241,3 +241,21 @@
 - 可能需要微调修改？
 
   ​	在 **==*DjangoFor4C/settings.py*==** 文件当中修改 ==***STATIC_URL = '/static/'***== 可能会解决图片无法显示的问题
+
+
+
+
+
+
+
+# Vue3项目创建流程
+
+## 创建vue项目
+ - npm install -g @vue/cli
+ - vue create FutureFront
+ - npm install
+ - npm install vue-resource
+ - npm install element-plus
+
+
+## 解决跨域问题

@@ -1,10 +1,6 @@
 from django.contrib import admin
 from index.models import Provinces, PopulationData
-# Register your models here.
 
-
-# class PopulationsAdmin(admin.ModelAdmin):
-#     list_display = ('')
 
 # 省份（含全国）管理
 class ProvincesAdmin(admin.ModelAdmin):
