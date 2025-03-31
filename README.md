@@ -1,12 +1,14 @@
-# Django项目创建流程
+# 项目创建流程
 
-## 一、通过命令行创建标准的Django项目
+## Django项目创建流程
+
+### 一、通过命令行创建标准的Django项目
 
 1. 找到想要存放项目的文件通过命令行 ==***django-admin startproject 项目名称***==
 2. 通过命令 ==***tree /F***== 得到当前的文件结构
 
 ```markdown
-## 以下是得到的默认项目文件结构
+#### 以下是得到的默认项目文件结构
 └─DjangoFor4C
     ├─manage.py     【关键：项目管理、启动项目、创建app、数据管理】
     │
@@ -20,7 +22,7 @@
 
 ### 二、APP
 
-```
+```markdown
 -项目
  - app，用户管理 【表结构、函数、HTML模板、CSS】
  - app，订单管理 【表结构、函数、HTML模板、CSS】
@@ -37,7 +39,7 @@
 1. cd进入该项目，新建对应的app应用 ==***python manage.py startapp app名称***== 【注意，app名称不能和django原有的app名称相同，会报错】
 
 ```markdown
-## 以下是拥有一个app的情况下的项目文件结构
+#### 以下是拥有一个app的情况下的项目文件结构
 └─DjangoFor4C
     ├─ manage.py
     │
@@ -113,17 +115,17 @@
   # 那么先运行 python manage.py migrate ，再运行上述启动命令即可
   ```
 
-  - 访问链接
+- 访问链接
 
-    ```
-    http://127.0.0.1:8000/
+  ```cmd
+  http://127.0.0.1:8000/
     
-    # 此时会发现404无法访问，那是因为我们只设置了index界面，即访问链接应该改成如下
+  # 此时会发现404无法访问，那是因为我们只设置了index界面，即访问链接应该改成如下
     
-    http://127.0.0.1:8000/index/
-    或者
-    localhost:8000/index/
-    ```
+  http://127.0.0.1:8000/index/
+  或者
+  localhost:8000/index/
+  ```
 
 ### 四、templates模板的使用
 
@@ -168,7 +170,7 @@
 
   - static文件夹内再新建以下文件夹，用于存放静态文件
 
-    ```
+    ```txt
     css
     js
     plugins
@@ -202,8 +204,8 @@
 
   ==***分别是 bootstrap-5.1.0、jquery-3.7.0.min.js***==
 
-  ```
-  当前的app1文件结构
+  ```markdown
+  #### 当前的app1文件结构
   └─app1
       │  admin.py
       │  apps.py
@@ -240,46 +242,272 @@
 
   在 **==*DjangoFor4C/settings.py*==** 文件当中修改 ==***STATIC_URL = '/static/'***== 可能会解决图片无法显示的问题
 
-# Vue3项目创建流程
+## Django项目后端建立流程
 
-## 创建vue项目
+### 一、通过命令行创建app
 
-- npm install -g @vue/cli
-- vue create FutureFront
-- npm install
-- npm install vue-resource
-- npm install element-plus
+```cmd
+python manage.py startapp population
 
-## 创建vue3项目
+此时的到的文件结构如下
+population/
+│  admin.py
+│  apps.py
+│  models.py
+│  tests.py
+│  urls.py
+│  views.py
+│  __init__.py
+│
+├─api
+│      populationAPI.py
+│
+└─migrations
+        __init__.py
+```
+
+**注意此时需要去`settings.py`当中修改注册app**  
+</br>
+
+## Vue3项目创建流程
+
+### 一、创建命令
 
 - npm init vue@latest
-- 下载相关依赖
-  - npm install
-- 下载网络请求、路由、状态管理
-  - npm install axios vue-router pinia
-  - npm install echarts vue-echarts
-  - npm install @vitejs/plugin-vue
-
-### 运行vue3项目
-
+- 默认命名后回车即可
+- cd django-vue
+- 进入项目文件
+- npm install
+- 装载依赖文件
 - npm run dev
- [http://localhost:5173/]
+- 启动开发服务器
 
-appfront/
-├── public/                 # 静态资源根目录（保持与Django相同结构）
-│   ├── static/            # 原Django静态文件目录
-│   │   ├── css/
-│   │   │   └── index.css  # 你的自定义样式文件
-│   │   ├── js/
-│   │   │   ├── flexible.js
-│   │   │   └── echarts.min.js
-│   │   ├── img/
-│   │   │   └── back01.mp4 # 背景视频
-│   │   └── plugins/       # 第三方库
-│   │       ├── bootstrap-5.1.0-dist/
-│   │       └── assets/v5/maps/china.js
-├── src/
-│   └── App.vue           # 主组件
-└── vite.config.js        # 配置文件
+```markdown
+#### 一个标准的vue项目文件排布
+django-vue/
+│  .gitignore
+│  index.html
+│  jsconfig.json
+│  package-lock.json
+│  package.json
+│  README.md
+│  vite.config.js
+│
+├─node_modules/
+│
+├─.vscode
+│      extensions.json
+│      settings.json
+│
+├─public
+│      favicon.ico
+│
+└─src
+    │  App.vue
+    │  main.js
+    │
+    ├─api/                            # 存放与后端API交互的文件
+    ├─assets                          # 存放静态资源文件的目录，图片或字体
+    │      base.css
+    │      logo.svg
+    │      main.css
+    │
+    ├─components                      # 存放Vue 组件文件的目录
+    │  │  HelloWorld.vue
+    │  │  TheWelcome.vue
+    │  │  WelcomeItem.vue
+    │  │
+    │  └─icons
+    │          IconCommunity.vue
+    │          IconDocumentation.vue
+    │          IconEcosystem.vue
+    │          IconSupport.vue
+    │          IconTooling.vue
+    │
+    ├─router/                         # 存放Vue Router 相关的文件，用于配置路由
+    ├─store/                          # 存放Vuex 相关的文件，用于状态管理
+    └─views/                          # 存放路由组件文件的目录，通常用于不同路由对应的页面组件
+```
 
-## 解决跨域问题
+### 二、安装插件
+
+#### 1.安装路由插件
+
+- npm install vue-router
+- npm install @vitejs/plugin-vue
+
+#### 2.建立流程
+
+1. 定义视图函数(view)
+
+    ```vue
+    <!-- django-vue/src/views/index.vue -->
+    <template>
+        <div>
+            主页index索引界面
+        </div>
+    </template>
+
+    <script>
+    export default {
+        name: 'IndexView',
+    }
+    </script>
+
+    <style>
+    /* 此处添加页面样式内容 */
+    </style>
+    ```
+
+2. 添加路由配置(router)
+
+    ```js
+    // django-vue/src/router/router.js
+    import { createRouter,createWebHistory } from 'vue-router' //引入路由插件函数
+
+    import IndexView from '@/views/index.vue' //引入被路由到的页面相关文件 
+
+    // import PaasView from '@/views/paas.vue'
+    // import LogView from "@/views/log.vue";
+    
+    const routes = [
+        {
+            path: '/',
+            name: 'IndexView',
+            component: IndexView
+        },
+        // 新增路由
+        // {
+        //     path: '/paas',
+        //     name: 'PaasView',
+        //     component: PaasView
+        // },
+    
+        // {
+        //     path: '/log',
+        //     name: 'LogView',
+        //     component: LogView
+        // },
+
+    ]
+    
+    // 创建路由
+    const router = createRouter({
+        history: createWebHistory(),
+        routes
+    });
+    
+    export default router
+    ```
+
+3. 注册路由(main.js)
+
+    ```js
+    // django-vue/src/main.js
+    import { createApp } from 'vue'
+    import App from './App.vue'
+    
+    const  app = createApp(App)
+    import router from './router/router'
+    app.use(router);  //注册路由
+    
+    app.mount('#app')
+    ```
+
+4. 清理App.vue视图
+
+    ```vue
+    <!-- django-vue/App.vue -->
+    <template>
+        <div>
+            <router-view></router-view>
+            <!-- 添加html跳转路由 -->
+            <router-link to="/">主页index</router-link>
+            <router-link to="/paas">paas界面</router-link>
+            <router-link to="/log">log界面</router-link>
+            <router-link to="/vues">vues界面</router-link>
+        </div>
+    </template>
+    
+    <script>
+    export default {
+        name: "App",
+    }
+    </script>
+    
+    <style>
+    /* 这里可以添加一些全局样式 */
+    </style>
+    ```
+
+5. vue调用后端接口(api)
+
+    ```js
+    // django-vue/src/api/vuesinfo.js
+    export function vuesClusterInfo(method, params) {
+    
+        if (method === 'GET') {
+            // 如果是GET请求，将参数拼接到URL上
+            //url += '?' + new URLSearchParams(params).toString();
+            return fetch('/vues/info/', {
+                method: 'GET',  //可以是post请求 根据你后端逻辑判断即可
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok')
+                    }
+                    return response.json()
+                });
+        } else if (method === 'POST') {
+            // 如果是POST请求，将参数放在请求体中
+            return fetch('/vues/info/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(params)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok')
+                    }
+                    return response.json()
+                });
+        } else {
+            throw new Error('Unsupported method')
+        }
+    }
+    ```
+
+6. 配置vite.config.js
+
+    ```js
+    import { fileURLToPath, URL } from 'node:url'
+    import { defineConfig } from 'vite'
+    import vue from '@vitejs/plugin-vue'
+    import vueDevTools from 'vite-plugin-vue-devtools'
+
+
+    export default defineConfig({
+    plugins: [
+        vue(),
+        vueDevTools(),
+    ],
+    resolve: {
+        alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+        },
+    },
+    server: {
+        proxy: {
+        '/vues': {
+            target: 'http://localhost:8000', // 转发的目标地址
+            changeOrigin: true, // 允许跨域
+        }
+        }
+    }
+    });
+    ```

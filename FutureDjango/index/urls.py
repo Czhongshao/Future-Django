@@ -1,6 +1,6 @@
 # index/urls.py
-from django.urls import path
-from . import views
+from django.urls import path, include
+from index import views
 
 app_name = 'index'
 
@@ -12,5 +12,8 @@ urlpatterns = [
     path('PieAll/', views.PieChartView.as_view(), name='pieall'),
     path('ScatterAll/', views.ScatterChartView.as_view(), name='scatterall'),
     path('MappAll/', views.MapChartView.as_view(), name='mapall'),
+
+    # 前后端分离接口
+    path('vues/', include('vues.urls'))
 ]
 
