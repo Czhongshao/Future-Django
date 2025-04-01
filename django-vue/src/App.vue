@@ -1,22 +1,38 @@
-<!-- django-vue/App.vue -->
+<!-- django-vue/src/App.vue -->
 <template>
-    <div>
-        <router-view></router-view>
-        <!-- 添加html跳转路由 -->
-        <router-link to="/">主页index</router-link>
-        <router-link to="/paas">paas界面</router-link>
-        <router-link to="/log">log界面</router-link>
-        <router-link to="/vues">vues界面</router-link>
-        <router-link to="/population">population界面</router-link>
+  <div class="app-container">
+    <router-view></router-view>
+    <div class="nav-links">
+      <router-link to="/">主页</router-link>
+      <router-link to="/population">人口数据</router-link>
+      <router-link to="/about">关于我们</router-link>
     </div>
+  </div>
 </template>
- 
+
 <script>
 export default {
-    name: "App",
-}
+  name: "App"
+};
 </script>
- 
+
 <style>
-/* 这里可以添加一些全局样式 */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+.nav-links {
+  margin-top: 20px;
+}
+.nav-links a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+.nav-links a:hover {
+  text-decoration: underline;
+}
 </style>

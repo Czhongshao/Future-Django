@@ -1,47 +1,27 @@
 // django-vue/src/router/router.js
-import { createRouter,createWebHistory } from 'vue-router' //引入路由插件函数
- 
-import IndexView from '@/views/index.vue'   //引入被路由到的页面相关文件
-import PaasView from '@/views/paas.vue'
-import vuesView from '@/views/vues.vue'
-import LogView from "@/views/log.vue"
-import PopulationView from '@/views/population.vue';
- 
+import { createRouter, createWebHistory } from 'vue-router';
+
 const routes = [
-    {
-        path: '/',
-        name: 'IndexView',
-        component: IndexView
-    },
-    // 新增路由
-    {
-        path: '/paas',
-        name: 'PaasView',
-        component: PaasView
-    },
- 
-    {
-        path: '/log',
-        name: 'LogView',
-        component: LogView
-    },
-    {
-        path: '/vues',
-        name: 'vuesView',
-        component: vuesView
-    },
-    {
-        path: '/population',
-        name: 'PopulationView',
-        component: PopulationView
-    },
-]
- 
- 
-// 创建路由
+  {
+    path: '/',
+    name: 'Home',
+    component: () => import('@/views/IndexView.vue')
+  },
+  {
+    path: '/population',
+    name: 'Population',
+    component: () => import('@/views/PopulationView.vue')
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: () => import('@/views/AboutView.vue') // 添加 About 页面的路由
+  },
+];
+
 const router = createRouter({
-    history: createWebHistory(),
-    routes
+  history: createWebHistory(),
+  routes
 });
- 
-export default router
+
+export default router;

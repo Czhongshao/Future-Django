@@ -366,6 +366,7 @@ django-vue/
 - npm install vue-router
 - npm install @vitejs/plugin-vue
 - npm install echarts
+- npm install vue-echarts
 
 #### 2.建立流程
 

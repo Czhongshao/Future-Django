@@ -6,7 +6,7 @@ const API_URL = 'http://127.0.0.1:8000/api/';
 
 // 获取人口数据
 export function getPopulationData(params = {}) {
-    return axios.get(API_URL, { params })
+    return axios.get(`${API_URL}`, { params })
         .then(response => {
             return response.data;
         })

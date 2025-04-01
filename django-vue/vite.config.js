@@ -1,8 +1,8 @@
-import { fileURLToPath, URL } from 'node:url'
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
-
+// diango-vue/vite.config.js
+import { fileURLToPath, URL } from 'node:url';
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import vueDevTools from 'vite-plugin-vue-devtools';
 
 export default defineConfig({
   plugins: [
@@ -16,11 +16,10 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/vues': {
+      '/api': {
         target: 'http://localhost:8000', // 转发的目标地址
         changeOrigin: true, // 允许跨域
       }
     }
   }
 });
-

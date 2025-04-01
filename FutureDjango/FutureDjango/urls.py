@@ -12,5 +12,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/login/'), name='logout'),
-    path('', include('population.urls')),  # 包含 vues 应用的路由
+    path('', include('population.urls')),  # 包含 population 应用的路由
 ]
