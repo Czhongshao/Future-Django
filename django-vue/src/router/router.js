@@ -13,6 +13,11 @@ const routes = [
     component: () => import('@/views/PopulationView.vue')
   },
   {
+    path: '/index',
+    name: 'Index',
+    component: () => import('@/views/IndexPage.vue')
+  },
+  {
     path: '/about',
     name: 'About',
     component: () => import('@/views/AboutView.vue') // 添加 About 页面的路由
