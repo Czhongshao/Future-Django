@@ -361,10 +361,11 @@ django-vue/
 
 ### 二、安装插件
 
-#### 1.安装路由插件
+#### 1.安装插件
 
 - npm install vue-router
 - npm install @vitejs/plugin-vue
+- npm install echarts
 
 #### 2.建立流程
 
