@@ -4,7 +4,8 @@ import { createRouter,createWebHistory } from 'vue-router' //引入路由插件�
 import IndexView from '@/views/index.vue'   //引入被路由到的页面相关文件
 import PaasView from '@/views/paas.vue'
 import vuesView from '@/views/vues.vue'
-import LogView from "@/views/log.vue";
+import LogView from "@/views/log.vue"
+import PopulationView from '@/views/population.vue';
  
 const routes = [
     {
@@ -28,6 +29,11 @@ const routes = [
         path: '/vues',
         name: 'vuesView',
         component: vuesView
+    },
+    {
+        path: '/population',
+        name: 'PopulationView',
+        component: PopulationView
     },
 ]
  

@@ -1,8 +1,8 @@
+# population/urls.py
 from django.urls import path
 
-from .api import populationAPI
+from .api.populationAPI import populationAPI  # 确保正确导入
 
 urlpatterns = [
-    # 添加请求路由，访问vues时会将请求交给模板下urls路由
-    path('api/', populationAPI.populationAPI, name='populationAPI'),
+    path('api/', populationAPI, name='populationAPI'),
 ]

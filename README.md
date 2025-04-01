@@ -269,6 +269,36 @@ population/
 **注意此时需要去`settings.py`当中修改注册app**  
 </br>
 
+### 数据库迁移
+
+#### mysql 用户认证方法
+
+`pip install cryptography`
+
+#### 数据库迁移至model
+
+```markdown
+*将在数据库的表中生成对应的`model`代码，并且打印出来*
+`python manage.py inspectdb`
+
+*将数据库当中的所有表导入`population`app下的`models.py`当中*
+`python manage.py inspectdb > population/models.py`
+
+*将数据库中的`provinces`表导入`population`app下的`models.py`当中*
+`python manage.py inspectdb provinces > population/models.py`
+
+*将数据库中的`provinces`|`population_data`表导入`population`app下的`models.py`当中*
+`python manage.py inspectdb --database default provinces population_data > population/models.py`
+```
+
+#### 数据库更新
+
+```markdown
+python manage.py makemigrations
+
+python manage.py migrate
+```
+
 ## Vue3项目创建流程
 
 ### 一、创建命令

@@ -7,6 +7,7 @@
         <router-link to="/paas">paas界面</router-link>
         <router-link to="/log">log界面</router-link>
         <router-link to="/vues">vues界面</router-link>
+        <router-link to="/population">population界面</router-link>
     </div>
 </template>
  
