@@ -19,11 +19,14 @@
 </template>
 
 <script>
+import { defineComponent } from 'vue';
 import PopulationBarChart from '@/components/IndexCharts/PopulationBarChart.vue';
 
-export default {
-  components: { PopulationBarChart },
-};
+export default defineComponent({
+  components: {
+    PopulationBarChart,
+  },
+});
 </script>
 
 <style scoped>
