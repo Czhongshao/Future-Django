@@ -151,12 +151,12 @@ export default {
           top: '0%',
           textAlign: 'center',
           textStyle: {
-            fontSize: 16,
+            fontSize: 18,
             fontWeight: 'bold',
-            color: 'white', // 标题字体颜色
+            color: 'black', // 标题字体颜色
           },
           subtextStyle: {
-            fontSize: 12,
+            fontSize: 14,
             fontWeight: 'bold',
             color: 'grey', // 副标题字体颜色
           },
@@ -236,28 +236,3 @@ export default {
   },
 };
 </script>
-<!-- 
-<style scoped>
-.chart-container {
-  width: 100%;
-  height: 600px;
-  position: relative;
-}
-
-.loading,
-.error {
-  text-align: center;
-  padding: 50px;
-  font-size: 18px;
-  color: #666;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.chart {
-  width: 100%;
-  height: 100%;
-}
-</style> -->

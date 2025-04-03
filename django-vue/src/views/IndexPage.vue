@@ -12,8 +12,11 @@
 
     <!-- 标题盒子设计 -->
     <header>
-      <h1>人口与社会趋势可视化大屏</h1>
-      <div class="showTime"></div>
+      <img class="background-header" src="@/assets/img/background02.png" alt="背景图2">
+      <div class="header-content">
+        <h1>人口与社会趋势可视化大屏</h1>
+        <div class="showTime"></div>
+      </div>
     </header>
 
     <!-- 主要内容区域 -->
@@ -25,7 +28,7 @@
           <div id="scatterChart" class="chart"></div>
         </div>
         <div class="panel bar">
-          <h2>柱状图</h2>
+          <!-- <h2>柱状图</h2> -->
           <PopulationBarChart class="chart" />
         </div>
       </div>

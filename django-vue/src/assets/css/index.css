@@ -13,31 +13,60 @@ li {
 
 /* 页面背景和排版 */
 body {
-  background-color: #66bfbf; /* 设置背景颜色 */
+  background-color: transparent; /* 设置背景颜色为透明 */
   line-height: 1.15; /* 设置行高 */
   overflow: hidden; /* 隐藏溢出内容 */
+}
+
+/* 背景图片样式 */
+.background {
+  position: absolute; /* 绝对定位 */
+  top: 0; /* 顶部距离 */
+  left: 0; /* 左侧距离 */
+  width: 100%; /* 设置宽度 */
+  height: 100%; /* 设置高度 */
+  object-fit: cover; /* 图片覆盖整个容器 */
+  opacity: 1; /* 设置透明度为1，即不透明 */
 }
 
 /* 顶部导航栏样式 */
 header {
   position: relative; /* 相对定位 */
   height: 0.8rem; /* 设置高度 */
+  width: 100%; /* 设置宽度为 100% */
+  overflow: hidden; /* 隐藏超出部分 */
 }
 
+/* 背景图片样式 */
+.background-header {
+  position: absolute; /* 绝对定位 */
+  top: 0;
+  left: 0;
+  width: 100%; /* 宽度占满整个 header */
+  height: 100%; /* 高度占满整个 header */
+  object-fit: cover; /* 确保图片覆盖整个区域 */
+  z-index: -1; /* 将背景置于内容下方 */
+}
+
+/* 标题样式 */
 header h1 {
   font-size: 0.475rem; /* 设置字体大小 */
-  color: #f9f7f7; /* 设置文字颜色 */
+  color: #000; /* 设置文字颜色 */
   text-align: center; /* 居中对齐 */
-  line-height: 1rem; /* 设置行高 */
+  line-height: 0.8rem; /* 设置行高 */
+  position: relative; /* 相对定位 */
+  z-index: 1; /* 确保标题在背景之上 */
 }
 
+/* 时间显示样式 */
 header .showTime {
   position: absolute; /* 绝对定位 */
   right: 0.375rem; /* 右侧距离 */
   line-height: 0.9375rem; /* 设置行高 */
-  color: #90f2ff; /* 设置文字颜色 */
+  color: #000; /* 设置文字颜色 */
   font-size: 0.3125rem; /* 设置字体大小 */
   top: 0; /* 顶部距离 */
+  z-index: 1; /* 确保时间显示在背景之上 */
 }
 
 /* 主内容区域样式 */
@@ -63,7 +92,7 @@ header .showTime {
   height: 5.83rem; /* 设置高度 */
   border: 1px solid #3dffff; /* 设置边框 */
   margin-bottom: 0.1875rem; /* 设置底部外边距 */
-  background: url() rgba(0, 0, 139, 0.2); /* 设置背景颜色和透明度 */
+  background: none;
 }
 
 /* 卡片装饰样式 */
@@ -124,14 +153,14 @@ header .showTime {
   height: 0.5rem; /* 设置高度 */
   line-height: 0.5rem; /* 设置行高 */
   text-align: center; /* 居中对齐 */
-  color: #f9f7f7; /* 设置文字颜色 */
+  color: #000; /* 设置文字颜色 */
   font-size: 0.25rem; /* 设置字体大小 */
   font-weight: 400; /* 设置字体粗细 */
 }
 
 /* 图表容器样式 */
 .mainbox .chart {
-  height: 6.6rem; /* 设置高度 */
+  height: 7.25rem; /* 设置高度 */
   width: 100%;
 }
 
@@ -152,7 +181,7 @@ header .showTime {
   height: 11.85rem; /* 设置高度 */
   border: 1px solid #00d6d6; /* 设置边框 */
   margin-bottom: 0.1875rem; /* 设置底部外边距 */
-  background: url() rgba(0, 0, 139, 0.2); /* 设置背景颜色和透明度 */
+  background: none;
 }
 
 .panel1::after {
@@ -187,21 +216,12 @@ header .showTime {
 
 /* 图表标题样式 */
 .shentu {
-  font-size: 0.1875rem; /* 设置字体大小 */
-  position: absolute; /* 绝对定位 */
-  color: #f9f7f7; /* 设置文字颜色 */
-  text-align: center; /* 居中对齐 */
-  left: 10%; /* 左侧距离 */
-  bottom: 1%; /* 底部距离 */
-}
-
-/* 背景图片样式 */
-.background {
-  position: absolute; /* 绝对定位 */
-  top: 0; /* 顶部距离 */
-  left: 0; /* 左侧距离 */
-  width: 100%; /* 设置宽度 */
-  height: 100%; /* 设置高度 */
-  object-fit: cover; /* 图片覆盖整个容器 */
-  opacity: 0.8; /* 设置透明度 */
+  font-size: 0.1875rem;
+  position: absolute;
+  color: #000;
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 1%;
+  width: max-content;
 }
