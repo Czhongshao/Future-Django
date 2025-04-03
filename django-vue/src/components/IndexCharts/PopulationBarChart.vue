@@ -123,10 +123,10 @@ export default {
     createBaseOption() {
       return {
         grid: {
-          top: 80, // 上边距
-          bottom: 100, // 下边距
-          left: '10%',
-          right: '10%',
+          top: '12%', // 上边距
+          bottom: '20%', // 下边距
+          left: '1%',
+          right: '1%',
         },
         tooltip: {
           trigger: 'axis',
@@ -216,23 +216,6 @@ export default {
             categoryGap: '20px', // 类目间距
           },
         ],
-        visualMap: {
-          min: 200, // 最小值
-          max: 13000, // 最大值
-          rangeText: ['分布程度(万人)', ''], // 视觉映射范围文本
-          isPiecewise: false, // 不分段
-          type: 'color', // 类型为颜色
-          inRange: {
-            color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026'],
-          },
-          left: '-5%', // 视觉映射组件位置
-          top: 'center', // 视觉映射组件位置
-          splitNumber: 10, // 分段数
-          orient: 'vertical', // 垂直方向
-          itemWidth: 20, // 图例宽度
-          itemHeight: 300, // 图例高度
-          show: false, // 显示视觉映射组件
-        },
       };
     },
 
@@ -241,17 +224,19 @@ export default {
      * @param {number} value - 当前数值
      * @returns {string} - 对应的颜色
      */
-    getColor(value) {
-      const min = 200;
+     getColor(value) {
+      const min = 4500;
       const max = 13000;
-      const colors = ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026'];
+      const colors = [
+        '#ffaf78', '#d76d77', '3a1c71'
+      ]; // 修改为渐变色的起始和结束颜色
       const index = Math.floor(((value - min) / (max - min)) * (colors.length - 1));
       return colors[index];
     },
   },
 };
 </script>
-
+<!-- 
 <style scoped>
 .chart-container {
   width: 100%;
@@ -275,4 +260,4 @@ export default {
   width: 100%;
   height: 100%;
 }
-</style>
+</style> -->

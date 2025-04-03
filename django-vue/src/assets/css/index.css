@@ -1,168 +1,207 @@
 /* index/static/css/index.css */
+/* 1rem=80px */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  margin: 0; /* 去掉默认的外边距 */
+  padding: 0; /* 去掉默认的内边距 */
+  box-sizing: border-box; /* 包含内边距和边框在元素的总宽度和高度内 */
 }
+
+/* 列表样式 */
 li {
-  list-style: none;
+  list-style: none; /* 去掉列表的默认样式 */
 }
+
+/* 页面背景和排版 */
 body {
-  background-color: #66bfbf;
-  line-height: 1.15;
-  overflow: hidden;
+  background-color: #66bfbf; /* 设置背景颜色 */
+  line-height: 1.15; /* 设置行高 */
+  overflow: hidden; /* 隐藏溢出内容 */
 }
+
+/* 顶部导航栏样式 */
 header {
-  position: relative;
-  height: 1rem;
+  position: relative; /* 相对定位 */
+  height: 0.8rem; /* 设置高度 */
 }
+
 header h1 {
-  font-size: 0.475rem;
-  color: #f9f7f7;
-  text-align: center;
-  line-height: 1rem;
+  font-size: 0.475rem; /* 设置字体大小 */
+  color: #f9f7f7; /* 设置文字颜色 */
+  text-align: center; /* 居中对齐 */
+  line-height: 1rem; /* 设置行高 */
 }
+
 header .showTime {
-  position: absolute;
-  right: 0.375rem;
-  line-height: 0.9375rem;
-  color: #90f2ff;
-  font-size: 0.3125rem;
-  top: 0;
+  position: absolute; /* 绝对定位 */
+  right: 0.375rem; /* 右侧距离 */
+  line-height: 0.9375rem; /* 设置行高 */
+  color: #90f2ff; /* 设置文字颜色 */
+  font-size: 0.3125rem; /* 设置字体大小 */
+  top: 0; /* 顶部距离 */
 }
+
+/* 主内容区域样式 */
 .mainbox {
-  display: flex;
-  min-width: 1024px;
-  max-width: 1920px;
-  margin: 0 auto;
-  padding: 0.125rem 0.125rem 0;
+  display: flex; /* 使用弹性布局 */
+  min-width: 24.4rem; /* 设置最小宽度 */
+  max-width: 36rem; /* 设置最大宽度 */
+  margin: 0 auto; /* 水平居中 */
+  padding: 0.125rem 0.125rem 0; /* 设置内边距 */
 }
+
 .mainbox .column {
-  flex: 3;
+  flex: 3; /* 设置弹性比例 */
 }
+
 .mainbox .column:nth-child(2) {
-  flex: 5;
-  margin: 0 0.125rem 0.1875rem;
+  flex: 5; /* 设置弹性比例 */
+  margin: 0 0.125rem 0.1875rem; /* 设置外边距 */
 }
+
 .mainbox .panel {
-  position: relative;
-  height: 5.6rem;
-  border: 1px solid #3dffff;
-  margin-bottom: 0.1875rem;
-  background: url() rgba(0, 0, 139, 0.2);
+  position: relative; /* 相对定位 */
+  height: 5.83rem; /* 设置高度 */
+  border: 1px solid #3dffff; /* 设置边框 */
+  margin-bottom: 0.1875rem; /* 设置底部外边距 */
+  background: url() rgba(0, 0, 139, 0.2); /* 设置背景颜色和透明度 */
 }
+
+/* 卡片装饰样式 */
 .mainbox .panel::before {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 10px;
-  height: 10px;
-  border-left: 2px solid #00d6d6;
-  border-top: 2px solid #00d6d6;
-  content: '';
+  position: absolute; /* 绝对定位 */
+  top: 0; /* 顶部距离 */
+  left: 0; /* 左侧距离 */
+  width: 0.125rem; /* 设置宽度 */
+  height: 0.125rem; /* 设置高度 */
+  border-left: 2px solid #00d6d6; /* 设置左侧边框 */
+  border-top: 2px solid #00d6d6; /* 设置顶部边框 */
+  content: ''; /* 必须设置内容 */
 }
+
 .mainbox .panel::after {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 10px;
-  height: 10px;
-  border-right: 2px solid #00d6d6;
-  border-top: 2px solid #00d6d6;
-  content: '';
+  position: absolute; /* 绝对定位 */
+  top: 0; /* 顶部距离 */
+  right: 0; /* 右侧距离 */
+  width: 0.125rem; /* 设置宽度 */
+  height: 0.125rem; /* 设置高度 */
+  border-right: 2px solid #00d6d6; /* 设置右侧边框 */
+  border-top: 2px solid #00d6d6; /* 设置顶部边框 */
+  content: ''; /* 必须设置内容 */
 }
+
+/* 卡片底部装饰 */
 .mainbox .panel .panel-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+  position: absolute; /* 绝对定位 */
+  bottom: 0; /* 底部距离 */
+  left: 0; /* 左侧距离 */
+  width: 100%; /* 设置宽度 */
 }
+
 .mainbox .panel .panel-footer::before {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 10px;
-  height: 10px;
-  border-left: 2px solid #00d6d6;
-  border-bottom: 2px solid #00d6d6;
-  content: '';
+  position: absolute; /* 绝对定位 */
+  bottom: 0; /* 底部距离 */
+  left: 0; /* 左侧距离 */
+  width: 0.125rem; /* 设置宽度 */
+  height: 0.125rem; /* 设置高度 */
+  border-left: 2px solid #00d6d6; /* 设置左侧边框 */
+  border-bottom: 2px solid #00d6d6; /* 设置底部边框 */
+  content: ''; /* 必须设置内容 */
 }
+
 .mainbox .panel .panel-footer::after {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 10px;
-  height: 10px;
-  border-right: 2px solid #00d6d6;
-  border-bottom: 2px solid #00d6d6;
-  content: '';
+  position: absolute; /* 绝对定位 */
+  bottom: 0; /* 底部距离 */
+  right: 0; /* 右侧距离 */
+  width: 0.125rem; /* 设置宽度 */
+  height: 0.125rem; /* 设置高度 */
+  border-right: 2px solid #00d6d6; /* 设置右侧边框 */
+  border-bottom: 2px solid #00d6d6; /* 设置底部边框 */
+  content: ''; /* 必须设置内容 */
 }
+
+/* 标题样式 */
 .mainbox h2 {
-  height: 0.6rem;
-  line-height: 0.6rem;
-  text-align: center;
-  color: #f9f7f7;
-  font-size: 0.24rem;
-  font-weight: 400;
+  height: 0.5rem; /* 设置高度 */
+  line-height: 0.5rem; /* 设置行高 */
+  text-align: center; /* 居中对齐 */
+  color: #f9f7f7; /* 设置文字颜色 */
+  font-size: 0.25rem; /* 设置字体大小 */
+  font-weight: 400; /* 设置字体粗细 */
 }
+
+/* 图表容器样式 */
 .mainbox .chart {
-  height: 4.6rem;
+  height: 6.6rem; /* 设置高度 */
+  width: 100%;
 }
+
+/* 地图容器样式 */
 .map {
-  height: 11.35rem;
-  background-color: #00d6d6;
+  height: 11.35rem; /* 设置高度 */
+  background-color: #00d6d6; /* 设置背景颜色 */
 }
+
 .map .chart {
-  height: 100%;
-  width: 100%;
+  height: 100%; /* 设置高度 */
+  width: 100%; /* 设置宽度 */
 }
+
+/* 特殊卡片样式 */
 .panel1 {
-  position: relative;
-  height: 11.35rem;
-  border: 1px solid #00d6d6;
-  margin-bottom: 0.1875rem;
-  background: url() rgba(0, 0, 139, 0.2);
+  position: relative; /* 相对定位 */
+  height: 11.85rem; /* 设置高度 */
+  border: 1px solid #00d6d6; /* 设置边框 */
+  margin-bottom: 0.1875rem; /* 设置底部外边距 */
+  background: url() rgba(0, 0, 139, 0.2); /* 设置背景颜色和透明度 */
 }
+
 .panel1::after {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 50px;
-  height: 50px;
-  border-right: 3px solid #00d6d6;
-  border-top: 3px solid #00d6d6;
-  content: '';
+  position: absolute; /* 绝对定位 */
+  top: 0; /* 顶部距离 */
+  right: 0; /* 右侧距离 */
+  width: 0.625rem; /* 设置宽度 */
+  height: 0.625rem; /* 设置高度 */
+  border-right: 3px solid #00d6d6; /* 设置右侧边框 */
+  border-top: 3px solid #00d6d6; /* 设置顶部边框 */
+  content: ''; /* 必须设置内容 */
 }
+
+/* 特殊卡片底部装饰 */
 .panel1 .panel-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+  position: absolute; /* 绝对定位 */
+  bottom: 0; /* 底部距离 */
+  left: 0; /* 左侧距离 */
+  width: 100%; /* 设置宽度 */
 }
+
 .panel1 .panel-footer::before {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100px;
-  height: 100px;
-  border-left: 3px solid #00d6d6;
-  border-bottom: 3px solid #00d6d6;
-  content: '';
+  position: absolute; /* 绝对定位 */
+  bottom: 0; /* 底部距离 */
+  left: 0; /* 左侧距离 */
+  width: 1.25rem; /* 设置宽度 */
+  height: 1.25rem; /* 设置高度 */
+  border-left: 3px solid #00d6d6; /* 设置左侧边框 */
+  border-bottom: 3px solid #00d6d6; /* 设置底部边框 */
+  content: ''; /* 必须设置内容 */
 }
+
+/* 图表标题样式 */
 .shentu {
-  font-size: 0.1875rem;
-  position: absolute;
-  color: #f9f7f7;
-  text-align: center;
-  left: 10%;
-  bottom: 1%;
+  font-size: 0.1875rem; /* 设置字体大小 */
+  position: absolute; /* 绝对定位 */
+  color: #f9f7f7; /* 设置文字颜色 */
+  text-align: center; /* 居中对齐 */
+  left: 10%; /* 左侧距离 */
+  bottom: 1%; /* 底部距离 */
 }
+
+/* 背景图片样式 */
 .background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.8;
+  position: absolute; /* 绝对定位 */
+  top: 0; /* 顶部距离 */
+  left: 0; /* 左侧距离 */
+  width: 100%; /* 设置宽度 */
+  height: 100%; /* 设置高度 */
+  object-fit: cover; /* 图片覆盖整个容器 */
+  opacity: 0.8; /* 设置透明度 */
 }
