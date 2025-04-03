@@ -36,7 +36,7 @@
       <!-- 中间图表 -->
       <div class="column">
         <div class="panel1 map">
-          <h2>中国地图</h2>
+          <!-- <h2>中国地图</h2> -->
           <PopulationMapChart class="chart" />
           <p class="shentu">注：基于自然资源部标准地图服务网站GS京(2022)1061号的标准地图制作，底图边界无修改。</p>
         </div>

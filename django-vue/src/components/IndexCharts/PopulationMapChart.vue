@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import * as echarts from 'echarts';
 import axios from 'axios';
 import { getPopulationData } from '@/api/populationAPI';
@@ -26,8 +26,8 @@ export default {
     // 加载地图数据
     const loadMapData = async () => {
       try {
-        const response = await axios.get('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json');
-        echarts.registerMap('china', response.data); // 注册地图
+        const response = await axios.get('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json'); 
+        echarts.registerMap('china', response.data);
       } catch (e) {
         error.value = `地图数据加载失败：${e.message}`;
       }
@@ -35,134 +35,96 @@ export default {
 
     // 处理原始数据
     const processData = (rawData) => {
-      const years = [...new Set(rawData.map((d) => d.year))].sort(); // 获取所有年份并排序
       const dataMap = new Map();
+      rawData.filter(d => d.province !== '全国').forEach(d => {
+        if (!dataMap.has(d.year)) {
+          dataMap.set(d.year, []);
+        }
+        dataMap.get(d.year).push({ name: d.province, value: d.total_population });
+      });
 
-      // 按年份分组并过滤全国数据
-      rawData
-        .filter((d) => d.province !== '全国')
-        .forEach((d) => {
-          const yearData = dataMap.get(d.year) || [];
-          yearData.push({
-            name: d.province,
-            value: d.total_population,
-          });
-          dataMap.set(d.year, yearData);
-        });
-
-      // 构造最终数据结构
       return {
-        years: Array.from(dataMap.keys()).sort(), // 年份从小到大排序
-        data: Array.from(dataMap.entries()).map(([year, data]) => ({
-          year,
-          data,
-        })),
+        years: [...dataMap.keys()].sort(),
+        data: [...dataMap.entries()].sort().map(([year, data]) => ({ year, data })),
       };
     };
 
-    /**
-     * 生成图表配置
-     * @param {Object} processedData - 处理后的数据
-     * @returns {Object} - ECharts 配置
-     */
-    const generateChartOption = (processedData) => {
-      const { years, data } = processedData;
-
-      const baseOption = {
+    // 生成图表配置
+    const generateChartOption = ({ years, data }) => ({
+      baseOption: {
         title: {
           text: '中国人口分布图',
           subtext: '数据来源：国家统计局',
-          left: 'center',
+          left: '50%',
+          top: "0",
+          textAlign: 'center',
+          textStyle: {
+            fontSize: 18,
+            fontWeight: 'bold',
+            color: 'black',
+          },
+          subtextStyle: {
+            fontSize: 14,
+            fontWeight: 'bold',
+            color: "grey",
+          }
         },
         tooltip: {
           trigger: 'item',
-          formatter: '{b} : {c} 万人', // 显示省份名称和人口值
+          formatter: '{b} : {c} 万人',
         },
         visualMap: {
           min: 0,
-          max: 13000, // 根据实际数据调整最大值
-          text: ['高', '低'],
-          realtime: false,
+          max: 13000,
+          text: ["分布程度(万人)", ""],
           calculable: true,
           inRange: {
-            color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026'],
+            color: ['#ffaf78', '#d76d77', '#3a1c71'],
           },
+          orient: 'vertical',
+          left: '0%',
+          top: '20%',
         },
-        series: [
-          {
-            name: '人口',
-            type: 'map',
-            map: 'china',
-            roam: true, // 允许缩放和平移
-            label: {
-              show: true, // 显示省份名称
-              color: '#000', // 省份名称颜色
-              fontSize: 12, // 省份名称字体大小
+        series: [{
+          name: '人口',
+          type: 'map',
+          map: 'china',
+          roam: true,
+          label: { show: false },
+          emphasis: { label: { show: true }, itemStyle: { areaColor: '#ff6600' } },
+        }],
+        timeline: {
+          axisType: 'category',
+          data: years,
+          autoPlay: true,
+          playInterval: 3000,
+          orient: 'vertical',
+          right: '0%',
+          top: 'middle',
+          width: '75px',
+          height: '75%',
+          label: {
+            formatter: function (value) {
+              return value + '年';
             },
-            itemStyle: {
-              areaColor: '#cce5df', // 地图区域默认颜色
-              borderColor: '#111', // 边界颜色
-            },
-            emphasis: {
-              label: {
-                show: true, // 鼠标悬停时显示省份名称
-                color: '#fff', // 鼠标悬停时省份名称颜色
-              },
-              itemStyle: {
-                areaColor: '#ff6600', // 鼠标悬停时区域颜色
-              },
-            },
+             color: '#000',
+             position: -10,
           },
-        ],
-      };
-
-      const options = data.map((item) => ({
-        title: {
-          text: `中国人口分布图 (${item.year}年)`,
+          lineStyle: { width: 2, color: '#000' },
         },
-        series: [
-          {
-            data: item.data, // 动态更新数据
-          },
-        ],
-      }));
-
-      return {
-        baseOption: {
-          ...baseOption,
-          timeline: {
-            axisType: 'category',
-            data: years, // 时间轴年份从小到大排列
-            autoPlay: true,
-            playInterval: 3000, // 播放间隔 3 秒
-            orient: 'horizontal', // 水平方向
-            left: '10%',
-            right: '10%',
-            bottom: '5%',
-            label: {
-              color: '#000', // 时间轴标签颜色
-              fontSize: 12, // 时间轴标签字体大小
-            },
-            lineStyle: {
-              width: 2, // 时间轴线条宽度
-              color: '#ff6600', // 时间轴线条颜色（更明显）
-            },
-            controlStyle: {
-              show: true, // 显示播放控制按钮
-            },
-          },
-        },
-        options,
-      };
-    };
+      },
+      options: data.map(({ year, data }) => ({
+        title: { text: `${year}年中国人口分布图` },
+        series: [{ data }],
+      })),
+    });
 
     // 初始化图表
     onMounted(async () => {
       try {
-        await loadMapData(); // 加载地图数据
-        const { data } = await getPopulationData(); // 获取人口数据
-        const processedData = processData(data); // 处理数据
-        chartOption.value = generateChartOption(processedData); // 生成图表配置
+        await loadMapData();
+        const { data } = await getPopulationData();
+        chartOption.value = generateChartOption(processData(data));
       } catch (e) {
         error.value = `数据加载失败：${e.message}`;
       } finally {
@@ -170,11 +132,7 @@ export default {
       }
     });
 
-    return {
-      loading,
-      error,
-      chartOption,
-    };
+    return { loading, error, chartOption };
   },
 };
 </script>

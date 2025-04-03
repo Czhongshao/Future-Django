@@ -228,7 +228,7 @@ export default {
       const min = 4500;
       const max = 13000;
       const colors = [
-        '#ffaf78', '#d76d77', '3a1c71'
+        '#ffaf78', '#d76d77', '#3a1c71'
       ]; // 修改为渐变色的起始和结束颜色
       const index = Math.floor(((value - min) / (max - min)) * (colors.length - 1));
       return colors[index];
