@@ -12,7 +12,7 @@
       <h1>人口数据可视化</h1>
       <!-- 图表组件 -->
       <div class="chart-container">
-        <PopulationBarChart />
+        <PopulationMapChart />
       </div>
     </div>
   </div>
@@ -20,11 +20,11 @@
 
 <script>
 import { defineComponent } from 'vue';
-import PopulationBarChart from '@/components/IndexCharts/PopulationBarChart.vue';
+import PopulationMapChart from '@/components/IndexCharts/PopulationMapChart.vue';
 
 export default defineComponent({
   components: {
-    PopulationBarChart,
+    PopulationMapChart,
   },
 });
 </script>

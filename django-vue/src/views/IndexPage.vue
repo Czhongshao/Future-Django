@@ -37,7 +37,7 @@
       <div class="column">
         <div class="panel1 map">
           <h2>中国地图</h2>
-          <div id="mapChart" class="chart"></div>
+          <PopulationMapChart class="chart" />
           <p class="shentu">注：基于自然资源部标准地图服务网站GS京(2022)1061号的标准地图制作，底图边界无修改。</p>
         </div>
       </div>
@@ -60,6 +60,7 @@
 <script>
 import { defineComponent } from 'vue';
 import PopulationBarChart from '@/components/IndexCharts/PopulationBarChart.vue';
+import PopulationMapChart from '@/components/IndexCharts/PopulationMapChart.vue';
 import '@/assets/js/bootstrap.js';
 import '@/assets/js/jquery-3.7.0.min.js';
 import '@/assets/js/flexible.js';
@@ -68,6 +69,7 @@ import '@/assets/css/index.css';
 export default defineComponent({
   components: {
     PopulationBarChart,
+    PopulationMapChart,
   },
 });
 </script>
