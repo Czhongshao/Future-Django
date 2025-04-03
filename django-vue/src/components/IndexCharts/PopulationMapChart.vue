@@ -22,14 +22,12 @@ export default {
     const loading = ref(true);
     const error = ref(null);
     const chartOption = ref(null);
-    const mapData = ref(null);
 
     // 加载地图数据
     const loadMapData = async () => {
       try {
-        const response = await axios.get('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json'); // 确保路径正确
-        mapData.value = response.data;
-        echarts.registerMap('china', mapData.value); // 注册地图
+        const response = await axios.get('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json');
+        echarts.registerMap('china', response.data); // 注册地图
       } catch (e) {
         error.value = `地图数据加载失败：${e.message}`;
       }
@@ -46,7 +44,7 @@ export default {
         .forEach((d) => {
           const yearData = dataMap.get(d.year) || [];
           yearData.push({
-            name: d.province, // 注意这里使用 name 而不是 province
+            name: d.province,
             value: d.total_population,
           });
           dataMap.set(d.year, yearData);
@@ -68,13 +66,11 @@ export default {
      * @returns {Object} - ECharts 配置
      */
     const generateChartOption = (processedData) => {
-      // const timeline = this.createTimeline(years); // 时间轴配置
       const { years, data } = processedData;
-      const currentYearData = data.find((d) => d.year === years[0]); // 默认显示第一个年份的数据
 
-      return {
+      const baseOption = {
         title: {
-          text: `中国人口分布图 (${currentYearData.year}年)`,
+          text: '中国人口分布图',
           subtext: '数据来源：国家统计局',
           left: 'center',
         },
@@ -116,9 +112,47 @@ export default {
                 areaColor: '#ff6600', // 鼠标悬停时区域颜色
               },
             },
-            data: currentYearData.data, // 确保数据格式为 [{ name: '省份名称', value: 人口值 }]
           },
         ],
+      };
+
+      const options = data.map((item) => ({
+        title: {
+          text: `中国人口分布图 (${item.year}年)`,
+        },
+        series: [
+          {
+            data: item.data, // 动态更新数据
+          },
+        ],
+      }));
+
+      return {
+        baseOption: {
+          ...baseOption,
+          timeline: {
+            axisType: 'category',
+            data: years, // 时间轴年份从小到大排列
+            autoPlay: true,
+            playInterval: 3000, // 播放间隔 3 秒
+            orient: 'horizontal', // 水平方向
+            left: '10%',
+            right: '10%',
+            bottom: '5%',
+            label: {
+              color: '#000', // 时间轴标签颜色
+              fontSize: 12, // 时间轴标签字体大小
+            },
+            lineStyle: {
+              width: 2, // 时间轴线条宽度
+              color: '#ff6600', // 时间轴线条颜色（更明显）
+            },
+            controlStyle: {
+              show: true, // 显示播放控制按钮
+            },
+          },
+        },
+        options,
       };
     };
 
@@ -133,12 +167,6 @@ export default {
         error.value = `数据加载失败：${e.message}`;
       } finally {
         loading.value = false;
-      }
-    });
-
-    onUnmounted(() => {
-      if (chartOption.value) {
-        echarts.dispose(chartOption.value);
       }
     });
 
