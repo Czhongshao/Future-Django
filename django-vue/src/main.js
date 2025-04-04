@@ -7,6 +7,12 @@ import ECharts from 'vue-echarts';
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
 import { BarChart } from 'echarts/charts';
+import { MapChart } from 'echarts/charts';
+import { PieChart } from 'echarts/charts';
+import { ScatterChart } from 'echarts/charts';
+import { LineChart } from 'echarts/charts';
+
+
 import {
   GridComponent,
   TitleComponent,
@@ -17,6 +23,10 @@ import {
 use([
   CanvasRenderer,
   BarChart,
+  ScatterChart,
+  MapChart,
+  LineChart,
+  PieChart,
   GridComponent,
   TitleComponent,
   TooltipComponent,

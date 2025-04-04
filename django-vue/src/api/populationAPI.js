@@ -15,18 +15,3 @@ export function getPopulationData(params = {}) {
             throw error;
         });
 }
-
-// 获取特定年份的人口数据
-export function getPopulationDataByYear(year) {
-    return getPopulationData({ year });
-}
-
-// 获取特定省份的人口数据
-export function getPopulationDataByProvince(province) {
-    return getPopulationData({ province });
-}
-
-// 获取特定年份和省份的人口数据
-export function getPopulationDataByYearAndProvince(year, province) {
-    return getPopulationData({ year, province });
-}

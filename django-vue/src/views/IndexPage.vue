@@ -49,8 +49,8 @@
           <div id="lineChart" class="chart"></div>
         </div>
         <div class="panel pie">
-          <h2>饼图</h2>
-          <div id="pieChart" class="chart"></div>
+          <!-- <h2>饼图</h2> -->
+          <PopulationPieChart class="chart" />
         </div>
       </div>
     </section>
@@ -61,6 +61,8 @@
 import { defineComponent } from 'vue';
 import PopulationBarChart from '@/components/IndexCharts/PopulationBarChart.vue';
 import PopulationMapChart from '@/components/IndexCharts/PopulationMapChart.vue';
+import PopulationPieChart from '@/components/IndexCharts/PopulationPieChart.vue';
+
 import '@/assets/js/bootstrap.js';
 import '@/assets/js/jquery-3.7.0.min.js';
 import '@/assets/js/flexible.js';
@@ -70,6 +72,7 @@ export default defineComponent({
   components: {
     PopulationBarChart,
     PopulationMapChart,
+    PopulationPieChart,
   },
 });
 </script>

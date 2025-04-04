@@ -1,4 +1,3 @@
-<!-- django-vue/src/views/PopulationView.vue -->
 <template>
   <div class="population-view">
     <!-- 视频背景 -->
@@ -12,19 +11,23 @@
       <h1>人口数据可视化</h1>
       <!-- 图表组件 -->
       <div class="chart-container">
-        <PopulationMapChart />
+        <PopulationPieChart />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+
 import { defineComponent } from 'vue';
-import PopulationMapChart from '@/components/IndexCharts/PopulationMapChart.vue';
+// import PopulationBarChart from '@/components/IndexCharts/PopulationBarChart.vue';
+// import PopulationMapChart from '@/components/IndexCharts/PopulationMapChart.vue';
+import PopulationPieChart from '@/components/IndexCharts/PopulationPieChart.vue';
+
 
 export default defineComponent({
   components: {
-    PopulationMapChart,
+    PopulationPieChart, // 注册饼图组件
   },
 });
 </script>
