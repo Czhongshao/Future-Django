@@ -1,13 +1,14 @@
+# population/api/gdpAPI.py
 from django.http import JsonResponse
-from population.models import PopulationData, Provinces
+from population.models import GDPData, Provinces
 
-def populationAPI(request):
+def gdpAPI(request):
     # 获取请求参数
     year = request.GET.get('year')
     province_name = request.GET.get('province')
 
     # 查询数据
-    queryset = PopulationData.objects.all()
+    queryset = GDPData.objects.all()
 
     if year:
         queryset = queryset.filter(year=year)
@@ -23,14 +24,7 @@ def populationAPI(request):
         {
             "province": item.province.province_name,
             "year": item.year,
-            "total_population": item.total,
-            "birth_rate": item.birth_rate,
-            "death_rate": item.death_rate,
-            "natural_growth_rate": item.nature_growth_rate,
-            'city_population': item.city,
-            'country_population': item.country,
-            "male_population": item.man,
-            "female_population": item.woman,
+            "gdp": item.gdp,
         }
         for item in queryset
     ]

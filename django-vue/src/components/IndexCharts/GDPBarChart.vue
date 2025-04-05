@@ -1,4 +1,4 @@
-<!-- django-vue/src/components/IndexCharts/PopulationBarChart.vue -->
+<!-- django-vue/src/components/IndexCharts/GDPBarChart.vue -->
 <template>
   <div class="chart-container">
     <!-- 加载状态 -->
@@ -10,11 +10,12 @@
   </div>
 </template>
 
+
 <script>
-import { getPopulationData } from '@/api/populationAPI';
+import { getGDPData } from '@/api/gdpAPI';
 
 export default {
-  name: 'PopulationBarChart',
+  name: 'GDPBarChart',
   data() {
     return {
       loading: true, // 数据加载状态
@@ -24,7 +25,7 @@ export default {
   },
   async mounted() {
     try {
-      const { data } = await getPopulationData();
+      const { data } = await getGDPData();
       this.chartOption = this.generateChartOption(this.processData(data));
     } catch (e) {
       this.error = `数据加载失败：${e.message}`;
@@ -49,7 +50,7 @@ export default {
           const yearData = dataMap.get(d.year) || [];
           yearData.push({
             province: d.province,
-            value: d.total_population,
+            value: d.gdp,
           });
           dataMap.set(d.year, yearData);
         });
@@ -66,7 +67,7 @@ export default {
 
     /**
      * 生成图表配置
-     * @param {Object} processedData - 处理后的数据
+     * @param {Object} processData - 处理后的数据
      * @returns {Object} - ECharts 配置
      */
     generateChartOption({ years, data }) {
@@ -96,7 +97,7 @@ export default {
         axisType: 'category',
         data: years, // 时间轴年份从小到大排列
         autoPlay: true,
-        playInterval: 3000, // 播放间隔 3 秒
+        playIntercal: 1000, // 播放间隔 3 秒
         orient: 'vertical', // 垂直方向
         left: '95%', // 时间轴位置靠右
         top: 'center', // 时间轴垂直居中
@@ -134,6 +135,21 @@ export default {
             type: 'shadow',
           },
         },
+        visualMap: {
+          min: 7000, // 数据的最小值
+          max: 140000, // 数据的最大值
+          text: ['高', '低'], // 文本，默认为数值文本
+          calculable: true, // 显示拖动用的手柄
+          inRange: {
+            color: ['#C6FFDD', '#FBD786', '#F7797D'], // 渐变色
+          },
+          orient: 'vertical', // 热度条方向
+          right: '1%', // 放在右侧
+          bottom: '20%', // 放在底部
+          textStyle: {
+            color: '#fff', // 文本颜色
+          },
+        },
       };
     },
 
@@ -145,7 +161,7 @@ export default {
     createYearOption({ year, data }) {
       return {
         title: {
-          text: `${year}年中国top10省人口`,
+          text: `${year}年中国top10省生产总值`,
           subtext: '数据来源：国家统计局',
           left: '50%',
           top: '0%',
@@ -163,7 +179,7 @@ export default {
         },
         xAxis: {
           type: 'value',
-          name: '人口(万人)',
+          name: '总值(亿元)',
           axisLabel: {
             show: false, // 不显示 X 轴标签
             fontSize: 10,
@@ -202,13 +218,13 @@ export default {
               value: d.value,
               itemStyle: {
                 borderRadius: [25, 25, 25, 25], // 柱子圆角
-                color: this.getColor(d.value), // 动态设置颜色
+                color: this.getColor(d.value), // 根据数值获取颜色
               },
             })).reverse(),
             label: {
               show: true, // 显示标签
               position: 'insideRight', // 标签位置在右侧
-              formatter: '{b}: {c}万人', // 标签格式化显示
+              formatter: '{b}: {c}亿元', // 标签格式化显示
               fontSize: 12, // 标签字体大小
               color: '#000', // 标签字体颜色
             },
@@ -224,12 +240,10 @@ export default {
      * @param {number} value - 当前数值
      * @returns {string} - 对应的颜色
      */
-     getColor(value) {
-      const min = 4500;
-      const max = 13000;
-      const colors = [
-        '#ffaf78', '#d76d77', '#3a1c71'
-      ]; // 修改为渐变色的起始和结束颜色
+    getColor(value) {
+      const min = 7000;
+      const max = 140000;
+      const colors = ['#C6FFDD', '#FBD786', '#F7797D']; // 修改为渐变色的起始和结束颜色
       const index = Math.floor(((value - min) / (max - min)) * (colors.length - 1));
       return colors[index];
     },

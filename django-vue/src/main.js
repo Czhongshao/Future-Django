@@ -6,31 +6,39 @@ import ECharts from 'vue-echarts';
 
 import { use } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
-import { BarChart } from 'echarts/charts';
-import { MapChart } from 'echarts/charts';
-import { PieChart } from 'echarts/charts';
-import { ScatterChart } from 'echarts/charts';
-import { LineChart } from 'echarts/charts';
 
+import { 
+  BarChart,
+  MapChart,
+  PieChart,
+  ScatterChart,
+  LineChart,
+ } from 'echarts/charts';
 
 import {
   GridComponent,
   TitleComponent,
   TooltipComponent,
-  TimelineComponent
+  TimelineComponent,
+  LegendComponent,
+  VisualMapComponent,
 } from 'echarts/components';
 
 use([
   CanvasRenderer,
+  
   BarChart,
-  ScatterChart,
   MapChart,
-  LineChart,
   PieChart,
+  ScatterChart,
+  LineChart,
+
   GridComponent,
   TitleComponent,
   TooltipComponent,
-  TimelineComponent
+  TimelineComponent,
+  LegendComponent,
+  VisualMapComponent,
 ]);
 
 const app = createApp(App);

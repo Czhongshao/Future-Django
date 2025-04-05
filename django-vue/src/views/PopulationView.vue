@@ -11,7 +11,7 @@
       <h1>人口数据可视化</h1>
       <!-- 图表组件 -->
       <div class="chart-container">
-        <PopulationPieChart />
+        <GDPBarChart />
       </div>
     </div>
   </div>
@@ -20,14 +20,15 @@
 <script>
 
 import { defineComponent } from 'vue';
-// import PopulationBarChart from '@/components/IndexCharts/PopulationBarChart.vue';
+import GDPBarChart from '@/components/IndexCharts/GDPBarChart.vue';
 // import PopulationMapChart from '@/components/IndexCharts/PopulationMapChart.vue';
-import PopulationPieChart from '@/components/IndexCharts/PopulationPieChart.vue';
+// import PopulationPieChart from '@/components/IndexCharts/PopulationPieChart.vue';
+// import PopulationLineChart from '@/components/IndexCharts/PopulationLineChart.vue';
 
 
 export default defineComponent({
   components: {
-    PopulationPieChart, // 注册饼图组件
+    GDPBarChart, // 注册饼图组件
   },
 });
 </script>

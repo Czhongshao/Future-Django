@@ -29,7 +29,7 @@
         </div>
         <div class="panel bar">
           <!-- <h2>柱状图</h2> -->
-          <PopulationBarChart class="chart" />
+          <GDPBarChart class="chart" />
         </div>
       </div>
 
@@ -45,8 +45,8 @@
       <!-- 右侧图表 -->
       <div class="column">
         <div class="panel line">
-          <h2>折线图</h2>
-          <div id="lineChart" class="chart"></div>
+          <!-- <h2>折线图</h2> -->
+          <PopulationLineChart class="chart" />
         </div>
         <div class="panel pie">
           <!-- <h2>饼图</h2> -->
@@ -59,9 +59,10 @@
 
 <script>
 import { defineComponent } from 'vue';
-import PopulationBarChart from '@/components/IndexCharts/PopulationBarChart.vue';
+import GDPBarChart from '@/components/IndexCharts/GDPBarChart.vue';
 import PopulationMapChart from '@/components/IndexCharts/PopulationMapChart.vue';
 import PopulationPieChart from '@/components/IndexCharts/PopulationPieChart.vue';
+import PopulationLineChart from '@/components/IndexCharts/PopulationLineChart.vue';
 
 import '@/assets/js/bootstrap.js';
 import '@/assets/js/jquery-3.7.0.min.js';
@@ -70,9 +71,10 @@ import '@/assets/css/index.css';
 
 export default defineComponent({
   components: {
-    PopulationBarChart,
+    GDPBarChart,
     PopulationMapChart,
     PopulationPieChart,
+    PopulationLineChart,
   },
 });
 </script>

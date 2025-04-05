@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import { ref } from 'vue';
 import axios from 'axios';
 import { registerMap } from 'echarts';
 import { getPopulationData } from '@/api/populationAPI';
@@ -66,7 +65,10 @@ export default {
           if (!dataMap.has(d.year)) {
             dataMap.set(d.year, []);
           }
-          dataMap.get(d.year).push({ name: d.province, value: d.total_population });
+          dataMap.get(d.year).push({ 
+            name: d.province, 
+            value: d.total_population || 0, 
+          });
         }
       });
 
@@ -126,10 +128,11 @@ export default {
         visualMap: {
           min: 0,
           max: 13000,
-          text: ['分布程度(万人)', ''],
+          text: ['分布程度\n(万人)', ''],
           calculable: true,
           inRange: {
-            color: ['#ffaf78', '#d76d77', '#3a1c71'],
+            // color: ['#ffaf78', '#d76d77', '#3a1c71'],
+            color: ['#C6FFDD', '#FBD786', '#F7797D'],
           },
           orient: 'vertical',
           left: '0%',
