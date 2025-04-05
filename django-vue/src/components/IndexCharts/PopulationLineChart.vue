@@ -55,6 +55,12 @@ export default {
         const baseOption = {
             tooltip: {
                 trigger: 'axis', // 触发类型为坐标轴触发
+                axisPointer: {
+                    type: 'cross', // 显示横向轴
+                    label: {
+                        backgroundColor: '#6a7985'
+                    }
+                },
                 formatter: function (params) {
                     // 自定义提示框格式
                     let tip = `<div>${params[0].name} 年</div>`;
@@ -125,11 +131,12 @@ export default {
                     symbol: 'circle', // 图标形状
                     symbolSize: 8, // 图标大小
                     label: {
-                        show: true, // 显示标签
+                        show: false, // 显示标签
                         position: 'top', // 标签位置在顶部
                         fontSize: 14, // 标签字体大小
                         color: '#000', // 标签字体颜色
                     },
+                    areaStyle: {}, // 面积
                 },
                 {
                     name: '自然增长率(‰)', // 系列名称
@@ -139,11 +146,12 @@ export default {
                     symbol: 'circle', // 图标形状
                     symbolSize: 8, // 图标大小
                     label: {
-                        show: true, // 显示标签
+                        show: false, // 显示标签
                         position: 'top', // 标签位置在顶部
                         fontSize: 14, // 标签字体大小
                         color: '#000', // 标签字体颜色
                     },
+                    areaStyle: {}, // 面积
                 },
             ],
         };

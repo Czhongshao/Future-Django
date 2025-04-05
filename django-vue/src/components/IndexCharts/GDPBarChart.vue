@@ -97,7 +97,7 @@ export default {
         axisType: 'category',
         data: years, // 时间轴年份从小到大排列
         autoPlay: true,
-        playIntercal: 3000, // 播放间隔 3 秒
+        playInterval: 3000, // 播放间隔 3 秒
         orient: 'vertical', // 垂直方向
         left: '95%', // 时间轴位置靠右
         top: 'center', // 时间轴垂直居中
