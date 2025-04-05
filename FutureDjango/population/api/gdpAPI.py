@@ -25,6 +25,12 @@ def gdpAPI(request):
             "province": item.province.province_name,
             "year": item.year,
             "gdp": item.gdp,
+            "average_revenue": item.average_revenue,
+            "average_consume": item.average_consume,
+            "city_revenue": item.city_revenue,
+            "country_revenue": item.country_revenue,
+            "city_consume": item.city_consume,
+            "country_consume": item.country_consume,
         }
         for item in queryset
     ]

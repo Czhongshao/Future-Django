@@ -44,6 +44,12 @@ class GDPData(models.Model):
     province = models.ForeignKey(Provinces, on_delete=models.CASCADE, verbose_name="省份")
     year = models.IntegerField(verbose_name="年份")
     gdp = models.IntegerField(verbose_name="生产总值（亿元）", blank=True, null=True)
+    average_revenue = models.IntegerField(verbose_name="居民人均可支配收入（元）", blank=True, null=True)
+    average_consume = models.IntegerField(verbose_name="居民人均消费支出（元）", blank=True, null=True)
+    city_revenue = models.IntegerField(verbose_name="城镇居民人均可支配收入(元)", blank=True, null=True)
+    country_revenue = models.IntegerField(verbose_name="农村居民人均可支配收入(元)", blank=True, null=True)
+    city_consume = models.IntegerField(verbose_name="城镇居民人均消费支出(元)", blank=True, null=True)
+    country_consume = models.IntegerField(verbose_name="农村居民人均消费支出(元)", blank=True, null=True)
 
     class Meta:
         managed = False

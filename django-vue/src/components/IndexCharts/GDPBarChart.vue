@@ -97,7 +97,7 @@ export default {
         axisType: 'category',
         data: years, // 时间轴年份从小到大排列
         autoPlay: true,
-        playIntercal: 1000, // 播放间隔 3 秒
+        playIntercal: 3000, // 播放间隔 3 秒
         orient: 'vertical', // 垂直方向
         left: '95%', // 时间轴位置靠右
         top: 'center', // 时间轴垂直居中
@@ -137,11 +137,11 @@ export default {
         },
         visualMap: {
           min: 7000, // 数据的最小值
-          max: 140000, // 数据的最大值
+          max: 136000, // 数据的最大值
           text: ['高', '低'], // 文本，默认为数值文本
-          calculable: true, // 显示拖动用的手柄
+          calculable: false, // 显示拖动用的手柄
           inRange: {
-            color: ['#C6FFDD', '#FBD786', '#F7797D'], // 渐变色
+            color: ['#c6ffdd', '#fbd786', '#f7797d'], // 渐变色
           },
           orient: 'vertical', // 热度条方向
           right: '1%', // 放在右侧
@@ -242,10 +242,35 @@ export default {
      */
     getColor(value) {
       const min = 7000;
-      const max = 140000;
-      const colors = ['#C6FFDD', '#FBD786', '#F7797D']; // 修改为渐变色的起始和结束颜色
-      const index = Math.floor(((value - min) / (max - min)) * (colors.length - 1));
-      return colors[index];
+      const max = 136000;
+      const colors = ['#c6ffdd', '#fbd786', '#f7797d']; // 渐变色的起始和结束颜色
+
+      // 计算颜色插值比例
+      const ratio = (value - min) / (max - min);
+
+      // 获取颜色的 RGB 值
+      const startColor = this.hexToRgb(colors[0]);
+      const endColor = this.hexToRgb(colors[1]);
+
+      // 计算插值后的 RGB 值
+      const r = Math.round(startColor.r + ratio * (endColor.r - startColor.r));
+      const g = Math.round(startColor.g + ratio * (endColor.g - startColor.g));
+      const b = Math.round(startColor.b + ratio * (endColor.b - startColor.b));
+
+      // 返回插值后的颜色
+      return `rgb(${r}, ${g}, ${b})`;
+    },
+
+    /**
+     * 将十六进制颜色转换为 RGB 对象
+     * @param {string} hex - 十六进制颜色值
+     * @returns {Object} - RGB 对象
+     */
+    hexToRgb(hex) {
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
+      return { r, g, b };
     },
   },
 };

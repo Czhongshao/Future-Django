@@ -131,8 +131,8 @@ export default {
           text: ['分布程度\n(万人)', ''],
           calculable: true,
           inRange: {
-            // color: ['#ffaf78', '#d76d77', '#3a1c71'],
-            color: ['#C6FFDD', '#FBD786', '#F7797D'],
+            color: ['#c6ffdd', '#fbd786', '#f7797d'],
+            // color: ['#e1eec3', '#f05053'],
           },
           orient: 'vertical',
           left: '0%',
