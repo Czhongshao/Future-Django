@@ -24,8 +24,8 @@
       <!-- 左侧图表 -->
       <div class="column">
         <div class="panel scatter">
-          <h2>散点图</h2>
-          <div id="scatterChart" class="chart"></div>
+          <!-- <h2>散点图</h2> -->
+          <LeftTopChart class="chart" />
         </div>
         <div class="panel bar">
           <!-- <h2>柱状图</h2> -->
@@ -63,6 +63,7 @@ import GDPBarChart from '@/components/IndexCharts/GDPBarChart.vue';
 import PopulationMapChart from '@/components/IndexCharts/PopulationMapChart.vue';
 import PopulationPieChart from '@/components/IndexCharts/PopulationPieChart.vue';
 import PopulationLineChart from '@/components/IndexCharts/PopulationLineChart.vue';
+import LeftTopChart from '@/components/IndexCharts/LeftTopChart.vue';
 
 import '@/assets/js/bootstrap.js';
 import '@/assets/js/jquery-3.7.0.min.js';
@@ -75,6 +76,7 @@ export default defineComponent({
     PopulationMapChart,
     PopulationPieChart,
     PopulationLineChart,
+    LeftTopChart,
   },
 });
 </script>
