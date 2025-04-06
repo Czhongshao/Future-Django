@@ -111,12 +111,12 @@ export default {
           top: '0',
           textAlign: 'center',
           textStyle: {
-            fontSize: 18,
+            fontSize: 24,
             fontWeight: 'bold',
             color: 'black',
           },
           subtextStyle: {
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: 'bold',
             color: 'grey',
           },

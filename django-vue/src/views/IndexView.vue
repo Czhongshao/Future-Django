@@ -6,31 +6,17 @@
       
       <!-- 添加一些功能按钮或导航链接 -->
       <div class="actions">
+        <router-link to="/index" class="button">可视化大屏界面</router-link>
         <router-link to="/population" class="button">查看人口数据</router-link>
-        <router-link to="/about" class="button">关于我们</router-link>
       </div>
     </div>
   </template>
   
-  <script>
-  export default {
-    name: 'IndexView',
-    data() {
-      return {
-        // 如果需要，可以在这里添加一些数据
-      };
-    },
-    methods: {
-      // 如果需要，可以在这里添加一些方法
-    },
-    mounted() {
-      // 页面加载完成后执行的逻辑
-      console.log('主页已加载');
-    }
-  };
-  </script>
+<script>
+
+</script>
   
-  <style scoped>
+<style scoped>
   .index-view {
     text-align: center;
     padding: 20px;
@@ -62,4 +48,4 @@
   .button:hover {
     background-color: #0056b3;
   }
-  </style>
+</style>

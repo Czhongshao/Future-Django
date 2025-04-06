@@ -17,11 +17,6 @@ const routes = [
     name: 'Index',
     component: () => import('@/views/IndexPage.vue')
   },
-  {
-    path: '/about',
-    name: 'About',
-    component: () => import('@/views/AboutView.vue') // 添加 About 页面的路由
-  },
 ];
 
 const router = createRouter({
