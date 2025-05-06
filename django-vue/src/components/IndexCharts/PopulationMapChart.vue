@@ -40,10 +40,20 @@ export default {
     /**
      * 加载地图数据
      */
+    // async loadMapData() {
+    //   try {
+    //     // const response = await axios.get('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json'); // 获取地图数据
+    //     const response = await axios.get('@/assets/js/中华人民共和国.json');
+    //     registerMap('china', response.data); // 注册地图
+    //   } catch (e) {
+    //     this.error = `地图数据加载失败：${e.message}`;
+    //   }
+    // },
     async loadMapData() {
       try {
-        const response = await axios.get('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json'); // 获取地图数据
-        registerMap('china', response.data); // 注册地图
+        // 动态加载本地 JSON 文件
+        const response = await import('@/assets/js/中华人民共和国.json');
+        registerMap('china', response.default); // 注册地图
       } catch (e) {
         this.error = `地图数据加载失败：${e.message}`;
       }
