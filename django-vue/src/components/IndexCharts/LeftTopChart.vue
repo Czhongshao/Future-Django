@@ -84,7 +84,7 @@ export default {
                 },
             },
             title: {
-                text: '全国xxxxxxxx', // 标题内容
+                text: '全国人均收入与消费', // 标题内容
                 subtext: '数据来源：国家统计局', // 副标题内容
                 left: '50%', // 标题水平居中
                 top: '0%', // 标题在顶部

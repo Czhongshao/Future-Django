@@ -4,20 +4,21 @@
     <!-- 使用图片作为背景 -->
     <img class="background" src="@/assets/img/background01.png" alt="背景图1">
 
-    <!-- 标题盒子设计 -->
+    <!-- 标题与导航区块 -->
     <header>
       <div class="header-content">
         <div class="actions">
           <router-link to="/" class="button">主页</router-link>
           <a href="https://github.com/Czhongshao/Future-Django" class="button" target="_blank">我的项目地址</a>
+          <router-link to="/about" class="button">关于我</router-link>
         </div>
         <h1>人口与社会趋势可视化大屏</h1>
       </div>
     </header>
 
-    <!-- 主要内容区域 -->
+    <!-- 主要内容区：三栏布局，分别放置不同类型的图表 -->
     <section class="mainbox">
-      <!-- 左侧图表 -->
+      <!-- 左侧图表区 -->
       <div class="column">
         <div class="panel scatter">
           <LeftTopChart class="chart" />
@@ -27,7 +28,7 @@
         </div>
       </div>
 
-      <!-- 中间图表 -->
+      <!-- 中间地图区 -->
       <div class="column">
         <div class="panel1 map">
           <PopulationMapChart class="chart" />
@@ -35,7 +36,7 @@
         </div>
       </div>
 
-      <!-- 右侧图表 -->
+      <!-- 右侧图表区 -->
       <div class="column">
         <div class="panel line">
           <PopulationLineChart class="chart" />
