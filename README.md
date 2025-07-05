@@ -1,545 +1,494 @@
-# 项目创建流程
+# Future-Django 项目
 
-## Django项目创建流程
+一个基于 Django + Vue3 的全栈数据可视化项目，用于展示人口和GDP等统计数据。
 
-### 一、通过命令行创建标准的Django项目
+## 📋 目录
 
-1. 找到想要存放项目的文件通过命令行 ==***django-admin startproject 项目名称***==
-2. 通过命令 ==***tree /F***== 得到当前的文件结构
+- [项目概述](#项目概述)
+- [技术栈](#技术栈)
+- [项目结构](#项目结构)
+- [快速开始](#快速开始)
+- [Django 后端开发](#django-后端开发)
+- [Vue3 前端开发](#vue3-前端开发)
+- [数据库配置](#数据库配置)
+- [部署说明](#部署说明)
 
-```markdown
-#### 以下是得到的默认项目文件结构
-└─DjangoFor4C
-    ├─manage.py     【关键：项目管理、启动项目、创建app、数据管理】
-    │
-    └─DjangoFor4C     【与项目名称相同】
-        ├─ asgi.py    【接收网络请求】
-        ├─ settings.py   【**项目配置文件**】    【经常需要操作】
-        ├─ urls.py    【**URL和函数的对应关系**】 【经常需要操作】
-        ├─ wsgi.py    【接收网络请求】
-        └─ __init__.py
+## 🎯 项目概述
+
+本项目是一个数据可视化平台，主要功能包括：
+
+- 人口数据展示和分析
+- GDP数据可视化
+- 省份数据统计
+- 交互式图表展示
+
+## 🛠 技术栈
+
+### 后端
+
+- **Django 4.x** - Web框架
+- **Django REST Framework** - API开发
+- **MySQL** - 数据库
+- **Python 3.8+** - 编程语言
+
+### 前端
+
+- **Vue 3** - 前端框架
+- **Vue Router** - 路由管理
+- **ECharts** - 数据可视化
+- **Vite** - 构建工具
+
+## 📁 项目结构
+
+```
+Future-Django/
+├── Datas/                    # 原始数据文件
+├── Datas_Out/               # 处理后的数据输出
+├── django-vue/              # Vue3前端项目
+│   ├── src/
+│   │   ├── api/            # API接口
+│   │   ├── components/     # Vue组件
+│   │   ├── views/          # 页面视图
+│   │   └── router/         # 路由配置
+│   └── public/             # 静态资源
+├── FutureDjango/           # Django后端项目
+│   ├── index/             # 主应用
+│   ├── population/        # 人口数据应用
+│   ├── vues/             # Vue相关应用
+│   └── manage.py         # Django管理脚本
+└── README.md
 ```
 
-### 二、APP
+## 🚀 快速开始
 
-```markdown
--项目
- - app，用户管理 【表结构、函数、HTML模板、CSS】
- - app，订单管理 【表结构、函数、HTML模板、CSS】
- - app，后台管理 【表结构、函数、HTML模板、CSS】
- - app，某网站   【表结构、函数、HTML模板、CSS】
- - app，API   【表结构、函数、HTML模板、CSS】
- ··
- 
-注意：开发简洁的情况下不需要创建多app，一般项目下只需要创建一个app
+### 环境要求
+
+- Python 3.8+
+- Node.js 16+
+- MySQL 8.0+
+
+### 1. 克隆项目
+
+```bash
+git clone https://github.com/Czhongshao/Future-Django.git
+cd Future-Django
 ```
 
-#### 创建app应用
+### 2. 后端设置
 
-1. cd进入该项目，新建对应的app应用 ==***python manage.py startapp app名称***== 【注意，app名称不能和django原有的app名称相同，会报错】
+```bash
+# 进入Django项目目录
+cd FutureDjango
 
-```markdown
-#### 以下是拥有一个app的情况下的项目文件结构
-└─DjangoFor4C
-    ├─ manage.py
-    │
-    ├─app1      【app的名称】
-    │  ├─ admin.py    【固定，不要修改】   【django默认提供的admin后台管理】
-    │  ├─ apps.py    【固定，不需要修改】 【app启动类】
-    │  ├─ models.py    【**关键**】    【对数据库操作】
-    │  ├─ tests.py    【固定，不要修改】   【进行项目的单元测试】
-    |  └─ migrations   【固定，不要修改】   【数据库字段变更记录】  
-    │  │  └── __init__.py  
-    │  ├─ views.py    【**关键**】    【视图函数等】
-    │  └─ __init__.py
-    │  
-    │
-    └─DjangoFor4C  
-        ├─ asgi.py 
-        ├─ settings.py
-        ├─ urls.py    【URL-->函数】
-        ├─ wsgi.py 
-        └─ __init__.py
+# 安装Python依赖
+pip install -r requirements.txt
+
+# 配置数据库（见数据库配置部分）
+
+# 运行数据库迁移
+python manage.py makemigrations
+python manage.py migrate
+
+# 启动Django服务器
+python manage.py runserver
 ```
 
-### 三、快速配置
+### 3. 前端设置
 
-#### 1、注册app 【DjangoFor4C/settings.py】
+```bash
+# 进入Vue项目目录
+cd django-vue
 
-1. 在 ==***DjangoFor4C/settings.py***== 文件当中，找到INSTALLED_APPS，并在其中添加创建的app
-2. ==***app1***== 或者是 ==***app1.apps.App1Config***== 均可
+# 安装依赖
+npm install
 
-#### 2、编写URL和视图函数对应关系
+# 启动开发服务器
+npm run dev
+```
 
-- ```python
-  # DjangoFor4C/urls.py
-  from django.contrib import admin
-  from django.urls import path
-  from app1 import views #【**需要从app当中导入views模块**】
-  
-  urlpatterns = [
-      # path('admin/', admin.site.urls), # 默认的路径关系, 可以不用
-  
-      # www.xxx.com/index/  --> 函数
-      path('index/', views.index), # 注意，路径后面最好多加一个/
-      path('users/list/', views.users_list),
-  ]
-  ```
+### 4. 访问应用
 
-  - index/：网址的路径，比如（www.xxx.com/index/）
-  - views.index：index视图函数
+- 后端API: http://localhost:8000
+- 前端页面: http://localhost:5173
 
-- ```python
-  # app1/views.py
-  from django.shortcuts import render, HttpResponse
-  
-  def index(request): # 默认参数设置为request
-      return HttpResponse("初次见面！")
-  
-  def users_list(request):
-      return render(request, "users_list.html") # 这段在后续templates时会提到
-  ```
+## 🐍 Django 后端开发
 
-#### 3、启动Django项目
+### 创建Django项目
 
-- 命令行启动
+```bash
+# 创建Django项目
+django-admin startproject FutureDjango
 
-  ```cmd
-  python manage.py runserver
-  
-  # 可能报错如下
-  `
-  You have 18 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, contenttypes, sessions.
-  Run 'python manage.py migrate' to apply them.
-  `
-  # 那么先运行 python manage.py migrate ，再运行上述启动命令即可
-  ```
+# 查看项目结构
+tree /F
+```
 
-- 访问链接
+**默认项目结构：**
 
-  ```cmd
-  http://127.0.0.1:8000/
-    
-  # 此时会发现404无法访问，那是因为我们只设置了index界面，即访问链接应该改成如下
-    
-  http://127.0.0.1:8000/index/
-  或者
-  localhost:8000/index/
-  ```
+```
+FutureDjango/
+├── manage.py              # 项目管理脚本
+└── FutureDjango/          # 项目配置目录
+    ├── __init__.py
+    ├── asgi.py           # ASGI配置
+    ├── settings.py       # 项目设置
+    ├── urls.py           # URL配置
+    └── wsgi.py           # WSGI配置
+```
 
-### 四、templates模板的使用
+### 创建应用
 
-- 在app1文件夹下新建一个 ==***templates***== 文件夹，用于存放html模板
+```bash
+# 进入项目目录
+cd FutureDjango
 
-  - 在该文件夹下新建一个html文件，命名为==***users_list.html***==
-
-  - 同时在 ==***app1/views.py***== 写入函数
-
-    ```python
-    def users_list(request):
-        # 默认去"app1/"路径下寻找"templates/"当中的html文件
-        # 根据app的注册顺序【DjangoFor4C/setting.py当中的APP顺序】，逐一去"templates"当中找
-     return render(request, "users_list.html")
-    ```
-
-  - 在 ==***DjangoFor4C/urls***== 中写入path
-
-    ``` pyhton
-    path('users/list/', views.users_list)
-    ```
-
-  - 如果根目录下有templats文件夹，并且在 ==***DjangoFor4C/settings.py***==  当中设置了TEMPLATES的DIRS
-
-    ```python
-    import os
-    TEMPLATES = [
-        {
-            'BACKEND': 'django.template.backends.django.DjangoTemplates',
-             # DIRS不填写就默认根据顺序查找templates
-             # 填写如下就会优先在根目录的templates当中查找，再根据注册顺序查找
-            'DIRS': [os.path.join(BASE_DIR, 'templates')], 
-            'APP_DIRS': True,
-      ······ # 省略
-        },
-    ]
-    ```
-
-### 五、static静态文件的使用
-
-- 在app下新建static文件夹
-
-  - static文件夹内再新建以下文件夹，用于存放静态文件
-
-    ```txt
-    css
-    js
-    plugins
-    img
-    ```
-
-- 在 **==*app1/templates/users_add.html*==** 当中引用静态资源时候需要在最顶上加上一句：
-
-  ```html
-  {% load static %}
-  ```
-
-  并且静态资源引用方式改为如：
-
-  ```html
-  <!-- 方法1 -->
-  <img src="{% static 'img/1.png' %}"  alt=""/>
-  <!-- 方法2 -->
-  <img src="/static/img/1.png" alt="">
-  ```
-
-  但上面两个方法都存在弊端:
-
-  1. 在vscode当中均无法通过ctrl+点击的方式索引到对应的文件
-
-  2. 在pycharm当中只有方法1能够索引到对应文件
-
-     **不过两者都不影响浏览器上的正常使用显示**
-
-- 放入静态文件
-
-  ==***分别是 bootstrap-5.1.0、jquery-3.7.0.min.js***==
-
-  ```markdown
-  #### 当前的app1文件结构
-  └─app1
-      │  admin.py
-      │  apps.py
-      │  models.py
-      │  tests.py
-      │  views.py
-      │  __init__.py
-      │
-      ├─migrations
-      │  └─ __init__.py
-      │
-      ├─static
-      │  ├─css
-      │  ├─img
-      │  │ └─ 1.png
-      │  │
-      │  ├─js
-      │  │ └─ jquery-3.7.0.min.js
-      │  │
-      │  └─plugins
-      │      └─ bootstrap-5.1.0-dist
-      │          │
-      │          ├─css
-      |     | └─(省略)
-      │          │
-      │          └─js
-      │    └─(省略)
-      ├─templates
-      │      users_add.html
-      │      users_list.html
-  ```
-
-- 可能需要微调修改？
-
-  在 **==*DjangoFor4C/settings.py*==** 文件当中修改 ==***STATIC_URL = '/static/'***== 可能会解决图片无法显示的问题
-
-## Django项目后端建立流程
-
-### 一、通过命令行创建app
-
-```cmd
+# 创建应用
 python manage.py startapp population
+```
 
-此时的到的文件结构如下
+**应用结构：**
+
+```
 population/
-│  admin.py
-│  apps.py
-│  models.py
-│  tests.py
-│  urls.py
-│  views.py
-│  __init__.py
-│
-├─api
-│      populationAPI.py
-│
-└─migrations
-        __init__.py
+├── __init__.py
+├── admin.py              # 后台管理配置
+├── apps.py               # 应用配置
+├── models.py             # 数据模型
+├── tests.py              # 测试文件
+├── views.py              # 视图函数
+├── api/                  # API接口
+│   └── populationAPI.py
+└── migrations/           # 数据库迁移文件
+    └── __init__.py
 ```
 
-**注意此时需要去`settings.py`当中修改注册app**  
-</br>
+### 应用配置
 
-### 数据库迁移
+#### 1. 注册应用
 
-#### mysql 用户认证方法
+在 `settings.py` 中添加应用：
 
-`pip install cryptography`
-
-#### 数据库迁移至model
-
-```markdown
-*将在数据库的表中生成对应的`model`代码，并且打印出来*
-`python manage.py inspectdb`
-
-*将数据库当中的所有表导入`population`app下的`models.py`当中*
-`python manage.py inspectdb > population/models.py`
-
-*将数据库中的`provinces`表导入`population`app下的`models.py`当中*
-`python manage.py inspectdb provinces > population/models.py`
-
-*将数据库中的`provinces`|`population_data`表导入`population`app下的`models.py`当中*
-`python manage.py inspectdb --database default provinces population_data > population/models.py`
+```python
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'population',  # 添加你的应用
+]
 ```
 
-#### 数据库更新
+#### 2. URL配置
 
-```markdown
+在 `urls.py` 中配置路由：
+
+```python
+from django.contrib import admin
+from django.urls import path
+from population import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/population/', views.population_data),
+    path('index/', views.index),
+]
+```
+
+#### 3. 视图函数
+
+在 `views.py` 中编写视图：
+
+```python
+from django.shortcuts import render
+from django.http import JsonResponse
+
+def index(request):
+    return render(request, 'index.html')
+
+def population_data(request):
+    # 返回人口数据
+    data = {
+        'message': '人口数据',
+        'data': []
+    }
+    return JsonResponse(data)
+```
+
+### 模板和静态文件
+
+#### 模板配置
+
+在应用目录下创建 `templates` 文件夹：
+
+```
+population/
+├── templates/
+│   └── index.html
+```
+
+在 `settings.py` 中配置模板目录：
+
+```python
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+```
+
+#### 静态文件配置
+
+在应用目录下创建 `static` 文件夹：
+
+```
+population/
+├── static/
+│   ├── css/
+│   ├── js/
+│   ├── img/
+│   └── plugins/
+```
+
+在模板中使用静态文件：
+
+```html
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <img src="{% static 'img/logo.png' %}" alt="Logo">
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
+```
+
+## ⚡ Vue3 前端开发
+
+### 创建Vue项目
+
+```bash
+# 创建Vue项目
+npm init vue@latest django-vue
+
+# 进入项目目录
+cd django-vue
+
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm run dev
+```
+
+### 项目结构
+
+```
+django-vue/
+├── public/
+│   └── favicon.ico
+├── src/
+│   ├── api/              # API接口
+│   ├── assets/           # 静态资源
+│   ├── components/       # 组件
+│   ├── router/           # 路由
+│   ├── views/            # 页面
+│   ├── App.vue           # 根组件
+│   └── main.js           # 入口文件
+├── package.json
+└── vite.config.js        # Vite配置
+```
+
+### 安装依赖
+
+```bash
+# 路由
+npm install vue-router
+
+# 图表库
+npm install echarts vue-echarts
+
+# 其他工具
+npm install axios
+```
+
+### 路由配置
+
+```javascript
+// src/router/index.js
+import { createRouter, createWebHistory } from 'vue-router'
+import IndexView from '@/views/IndexView.vue'
+
+const routes = [
+  {
+    path: '/',
+    name: 'Index',
+    component: IndexView
+  },
+  {
+    path: '/population',
+    name: 'Population',
+    component: () => import('@/views/PopulationView.vue')
+  }
+]
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+})
+
+export default router
+```
+
+### API配置
+
+```javascript
+// src/api/population.js
+export function getPopulationData() {
+  return fetch('/api/population/', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => response.json())
+}
+```
+
+### Vite代理配置
+
+```javascript
+// vite.config.js
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+
+export default defineConfig({
+  plugins: [vue()],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true
+      }
+    }
+  }
+})
+```
+
+## 🗄 数据库配置
+
+### MySQL配置
+
+#### 1. 安装依赖
+
+```bash
+pip install mysqlclient cryptography
+```
+
+#### 2. 数据库设置
+
+在 `settings.py` 中配置数据库：
+
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'your_database_name',
+        'USER': 'your_username',
+        'PASSWORD': 'your_password',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}
+```
+
+#### 3. 数据库迁移
+
+```bash
+# 从现有数据库生成模型
+python manage.py inspectdb > population/models.py
+
+# 创建迁移文件
 python manage.py makemigrations
 
+# 应用迁移
 python manage.py migrate
 ```
 
-## Vue3项目创建流程
+### 数据导入
 
-### 一、创建命令
+```bash
+# 导入特定表
+python manage.py inspectdb provinces > population/models.py
 
-- npm init vue@latest
-- 默认命名后回车即可
-- cd django-vue
-- 进入项目文件
-- npm install
-- 装载依赖文件
-- npm run dev
-- 启动开发服务器
-
-```markdown
-#### 一个标准的vue项目文件排布
-django-vue/
-│  .gitignore
-│  index.html
-│  jsconfig.json
-│  package-lock.json
-│  package.json
-│  README.md
-│  vite.config.js
-│
-├─node_modules/
-│
-├─.vscode
-│      extensions.json
-│      settings.json
-│
-├─public
-│      favicon.ico
-│
-└─src
-    │  App.vue
-    │  main.js
-    │
-    ├─api/                            # 存放与后端API交互的文件
-    ├─assets                          # 存放静态资源文件的目录，图片或字体
-    │      base.css
-    │      logo.svg
-    │      main.css
-    │
-    ├─components                      # 存放Vue 组件文件的目录
-    │  │  HelloWorld.vue
-    │  │  TheWelcome.vue
-    │  │  WelcomeItem.vue
-    │  │
-    │  └─icons
-    │          IconCommunity.vue
-    │          IconDocumentation.vue
-    │          IconEcosystem.vue
-    │          IconSupport.vue
-    │          IconTooling.vue
-    │
-    ├─router/                         # 存放Vue Router 相关的文件，用于配置路由
-    ├─store/                          # 存放Vuex 相关的文件，用于状态管理
-    └─views/                          # 存放路由组件文件的目录，通常用于不同路由对应的页面组件
+# 导入多个表
+python manage.py inspectdb --database default provinces population_data > population/models.py
 ```
 
-### 二、安装插件
+## 🚀 部署说明
 
-#### 1.安装插件
+### 生产环境配置
 
-- npm install vue-router
-- npm install @vitejs/plugin-vue
-- npm install echarts
-- npm install vue-echarts
+1. **Django设置**
 
-#### 2.建立流程
+   - 修改 `DEBUG = False`
+   - 配置 `ALLOWED_HOSTS`
+   - 设置静态文件路径
+2. **数据库配置**
 
-1. 定义视图函数(view)
+   - 使用生产环境数据库
+   - 配置数据库连接池
+3. **前端构建**
 
-    ```vue
-    <!-- django-vue/src/views/index.vue -->
-    <template>
-        <div>
-            主页index索引界面
-        </div>
-    </template>
+   ```bash
+   npm run build
+   ```
 
-    <script>
-    export default {
-        name: 'IndexView',
-    }
-    </script>
+### 常用命令
 
-    <style>
-    /* 此处添加页面样式内容 */
-    </style>
-    ```
+```bash
+# Django管理
+python manage.py runserver          # 启动开发服务器
+python manage.py makemigrations     # 创建迁移文件
+python manage.py migrate            # 应用迁移
+python manage.py collectstatic      # 收集静态文件
 
-2. 添加路由配置(router)
+# Vue开发
+npm run dev                         # 启动开发服务器
+npm run build                       # 构建生产版本
+npm run preview                     # 预览构建结果
+```
 
-    ```js
-    // django-vue/src/router/router.js
-    import { createRouter,createWebHistory } from 'vue-router' //引入路由插件函数
+## 📝 注意事项
 
-    import IndexView from '@/views/index.vue' //引入被路由到的页面相关文件 
+1. **应用命名**：避免使用Django内置应用名称
+2. **静态文件**：确保正确配置静态文件路径
+3. **跨域问题**：配置CORS或使用代理
+4. **数据库**：定期备份重要数据
+5. **安全**：生产环境中保护敏感信息
 
-    // import PaasView from '@/views/paas.vue'
-    // import LogView from "@/views/log.vue";
-    
-    const routes = [
-        {
-            path: '/',
-            name: 'IndexView',
-            component: IndexView
-        },
-        // 新增路由
-        // {
-        //     path: '/paas',
-        //     name: 'PaasView',
-        //     component: PaasView
-        // },
-    
-        // {
-        //     path: '/log',
-        //     name: 'LogView',
-        //     component: LogView
-        // },
+## 🤝 贡献指南
 
-    ]
-    
-    // 创建路由
-    const router = createRouter({
-        history: createWebHistory(),
-        routes
-    });
-    
-    export default router
-    ```
+1. Fork 项目
+2. 创建功能分支
+3. 提交更改
+4. 推送到分支
+5. 创建 Pull Request
 
-3. 注册路由(main.js)
+## 📄 许可证
 
-    ```js
-    // django-vue/src/main.js
-    import { createApp } from 'vue'
-    import App from './App.vue'
-    
-    const  app = createApp(App)
-    import router from './router/router'
-    app.use(router);  //注册路由
-    
-    app.mount('#app')
-    ```
-
-4. 清理App.vue视图
-
-    ```vue
-    <!-- django-vue/App.vue -->
-    <template>
-        <div>
-            <router-view></router-view>
-            <!-- 添加html跳转路由 -->
-            <router-link to="/">主页index</router-link>
-            <router-link to="/paas">paas界面</router-link>
-            <router-link to="/log">log界面</router-link>
-            <router-link to="/vues">vues界面</router-link>
-        </div>
-    </template>
-    
-    <script>
-    export default {
-        name: "App",
-    }
-    </script>
-    
-    <style>
-    /* 这里可以添加一些全局样式 */
-    </style>
-    ```
-
-5. vue调用后端接口(api)
-
-    ```js
-    // django-vue/src/api/vuesinfo.js
-    export function vuesClusterInfo(method, params) {
-    
-        if (method === 'GET') {
-            // 如果是GET请求，将参数拼接到URL上
-            //url += '?' + new URLSearchParams(params).toString();
-            return fetch('/vues/info/', {
-                method: 'GET',  //可以是post请求 根据你后端逻辑判断即可
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok')
-                    }
-                    return response.json()
-                });
-        } else if (method === 'POST') {
-            // 如果是POST请求，将参数放在请求体中
-            return fetch('/vues/info/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(params)
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok')
-                    }
-                    return response.json()
-                });
-        } else {
-            throw new Error('Unsupported method')
-        }
-    }
-    ```
-
-6. 配置vite.config.js
-
-    ```js
-    import { fileURLToPath, URL } from 'node:url'
-    import { defineConfig } from 'vite'
-    import vue from '@vitejs/plugin-vue'
-    import vueDevTools from 'vite-plugin-vue-devtools'
-
-
-    export default defineConfig({
-    plugins: [
-        vue(),
-        vueDevTools(),
-    ],
-    resolve: {
-        alias: {
-        '@': fileURLToPath(new URL('./src', import.meta.url)),
-        },
-    },
-    server: {
-        proxy: {
-        '/vues': {
-            target: 'http://localhost:8000', // 转发的目标地址
-            changeOrigin: true, // 允许跨域
-        }
-        }
-    }
-    });
-    ```
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
