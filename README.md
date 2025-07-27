@@ -1,68 +1,56 @@
 # Future-Django 项目
 
-基于 **Django + Vue3** 的全栈数据可视化平台，聚焦人口、GDP等统计数据的展示与分析。
+基于 **Django + Vue3** 的前后端分离数据可视化平台，聚焦人口、GDP等统计数据的展示与分析。
 
 ---
 
 ## 📋 目录
 
-- [项目简介](#项目简介)
-- [技术栈](#技术栈)
-- [项目结构](#项目结构)
-- [快速开始](#快速开始)
-- [后端开发（Django）](#后端开发django)
-- [前端开发（Vue3）](#前端开发vue3)
-- [数据库配置](#数据库配置)
-- [部署说明](#部署说明)
-- [注意事项](#注意事项)
-- [贡献指南](#贡献指南)
-- [许可证](#许可证)
+- 项目简介
+- 技术栈
+- 目录结构
+- 快速开始
+- 数据库初始化
+- 后端说明
+- 前端说明
+- 部署建议
+- 常见问题
+- 贡献指南
+- 许可证
 
 ---
 
 ## 🎯 项目简介
 
-本项目为数据可视化平台，主要功能包括：
+Future-Django 是一个前后端分离的全栈可视化平台，支持：
 
-- 人口与GDP等多维度数据的可视化展示
+- 人口、GDP等多维度数据的可视化
 - 省份/地区统计与对比分析
 - 交互式图表与数据探索
+- 前端与后端通过 RESTful API 通信
 
 ---
 
 ## 🛠 技术栈
 
-**后端：**
-
-- Django 4.x
-- Django REST Framework
-- MySQL 8.0+
-- Python 3.8+
-
-**前端：**
-
-- Vue 3
-- Vue Router
-- ECharts
-- Vite
-- Axios
+- **后端**：Django 4.x、Django REST Framework、MySQL 8.0+、Python 3.8+
+- **前端**：Vue 3、Vite、ECharts、Axios
 
 ---
 
-## 📁 项目结构
+## 📁 目录结构
 
 ```
 Future-Django/
-├── Datas/                # 原始数据文件
-├── Datas_Out/            # 处理后数据输出
+├── Datas/                # 原始数据
+├── Datas_Out/            # 处理后数据（含 futuredjango.sql）
 ├── django-vue/           # Vue3 前端项目
 │   ├── src/              # 前端源码
-│   ├── public/           # 前端静态资源
-│   └── ...               # 依赖、配置等
+│   └── ...
 ├── FutureDjango/         # Django 后端项目
 │   ├── index/            # 主应用
-│   ├── population/       # 人口数据应用
-│   ├── vues/             # Vue相关后端应用
+│   ├── population/       # 人口数据API
+│   ├── vues/             # 其他API
 │   ├── staticfiles/      # 后端静态文件
 │   └── manage.py         # 管理脚本
 └── README.md
@@ -85,18 +73,27 @@ git clone https://github.com/Czhongshao/Future-Django.git
 cd Future-Django
 ```
 
-### 2. 后端启动
+### 2. 数据库一键导入
+
+```bash
+mysql -u your_username -p your_database_name < Datas_Out/futuredjango.sql
+```
+
+### 3. 后端启动（API服务+管理后台）
 
 ```bash
 cd FutureDjango
 pip install -r requirements.txt
-# 配置数据库（见下文）
+# 修改 settings.py 数据库配置
 python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
 ```
 
-### 3. 前端启动
+- 访问 http://localhost:8000/ 会自动跳转到 http://localhost:8000/admin/，输入管理员账号密码即可进入后台。
+- API接口路径如 /api/population/、/api/gdp/。
+
+### 4. 前端启动
 
 ```bash
 cd django-vue
@@ -104,40 +101,17 @@ npm install
 npm run dev
 ```
 
-### 4. 访问地址
-
-- 后端API: http://localhost:8000
-- 前端页面: http://localhost:5173
+- 访问前端页面: http://localhost:5173
 
 ---
 
-## 🐍 后端开发（Django）
-
-- 项目结构清晰，推荐每个功能模块单独建 app（如 population、index、vues）。
-- API 推荐使用 Django REST Framework 编写，便于前后端分离。
-- 静态文件、模板文件建议分别放在各自 app 的 static、templates 目录下。
-- 详细开发说明见各 app 目录及注释。
-
----
-
-## ⚡ 前端开发（Vue3）
-
-- 采用 Vue3 + Vite，开发体验流畅。
-- 组件、页面、API、路由等结构清晰，便于扩展。
-- 推荐使用 ECharts 进行数据可视化，Axios 进行 API 通信。
-- 代理配置已在 vite.config.js 中设置，开发时无需担心跨域。
-
----
-
-## 🗄 数据库配置
+## 🗄 数据库配置说明
 
 1. 安装依赖：
-
    ```bash
    pip install mysqlclient cryptography
    ```
 2. 修改 `FutureDjango/settings.py`：
-
    ```python
    DATABASES = {
        'default': {
@@ -150,41 +124,48 @@ npm run dev
        }
    }
    ```
-3. 数据迁移：
-
-   ```bash
-   python manage.py makemigrations
-   python manage.py migrate
-   ```
-4. 数据导入（如需从现有表生成模型）：
-
-   ```bash
-   python manage.py inspectdb > population/models.py
-   ```
 
 ---
 
-## 🚀 部署说明
+## 🐍 后端说明（Django API）
 
-1. **Django生产环境：**
+- 每个功能模块单独建 app（如 population、index、vues）。
+- API 使用 Django REST Framework 编写，前后端通过 HTTP 接口交互。
+- 根路径自动跳转到 /admin/，便于管理后台登录。
+- 业务开发以 API 为主，前端通过 Axios 请求数据。
+
+---
+
+## ⚡ 前端说明（Vue3 独立部署）
+
+- 采用 Vue3 + Vite，开发体验流畅。
+- 组件、页面、API、路由结构清晰，便于扩展。
+- 使用 ECharts 进行数据可视化，Axios 进行 API 通信。
+- vite.config.js 已配置代理，开发时无需担心跨域。
+- 生产环境建议将 dist 目录部署到独立 Web 服务器（如 Nginx、Apache、Vercel、Netlify 等）。
+
+---
+
+## 🚀 部署建议
+
+1. **后端（Django API）**：
    - `DEBUG = False`
    - 配置 `ALLOWED_HOSTS`
-   - 设置静态文件路径
-2. **数据库：**
+   - 设置静态文件路径（如有API文档/后台管理需求）
+2. **数据库**：
    - 使用生产数据库，配置连接池
-3. **前端：**
+3. **前端（Vue3）**：
    - 构建生产版本：`npm run build`
-   - 部署 dist 目录到 Web 服务器
+   - 将 dist 目录部署到 Web 服务器
 
 ---
 
-## 📝 注意事项
+## ❓ 常见问题
 
-- 避免 app 命名与 Django 内置应用冲突
-- 静态文件路径需正确配置
-- 跨域问题建议用 CORS 或前端代理
-- 定期备份数据库
-- 生产环境注意保护敏感信息
+- 访问 http://localhost:8000/无内容？ → 已自动跳转到 /admin/，请用管理员账号登录。
+- 数据库导入报错？→ 请确认 MySQL 版本为 8.0+，并检查 SQL 文件路径及权限。
+- 前后端接口跨域？→ 开发环境已配置代理，生产环境建议后端允许 CORS 或前端同源部署。
+- 其他问题欢迎提 Issue。
 
 ---
 
